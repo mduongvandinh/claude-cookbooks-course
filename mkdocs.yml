@@ -1,0 +1,47 @@
+site_name: Claude Cookbooks Course
+site_description: Giáo trình 5 trục — xây ứng dụng LLM sản xuất
+site_url: https://mduongvandinh.github.io/claude-cookbooks-course/
+repo_url: https://github.com/mduongvandinh/claude-cookbooks-course
+theme:
+  name: material
+  language: vi
+  features: [navigation.sections, navigation.top, content.code.copy, content.tabs.link, search.highlight]
+  palette:
+    - scheme: default
+      primary: teal
+      toggle: {icon: material/weather-night, name: Nền tối}
+    - scheme: slate
+      primary: teal
+      toggle: {icon: material/weather-sunny, name: Nền sáng}
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc: {permalink: true}
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight: {anchor_linenums: true}
+  - pymdownx.tabbed: {alternate_style: true}
+extra_css: [assets/stylesheets/extra.css]
+extra_javascript: [assets/javascripts/predict-reveal.js]
+nav:
+  - Trang chủ: index.md
+  - "Syllabus 5 trục": syllabus.html
+  - Hướng dẫn giảng viên: huong-dan-giang-vien.md
+  - Cài đặt môi trường: setup-moi-truong.md
+  - "Buổi 0 — Nền tảng":
+      - Tổng quan: on-ramp/index.md
+      - "Nền tảng API & tool use": on-ramp/buoi-0-nen-tang/bai-giang.md
+  - "Trục 00 — Đo lường":
+      - Tổng quan: truc-00-do-luong/index.md
+      - "Ca hỏng: giám khảo hỏng": truc-00-do-luong/00-ca-hong.md
+      - "0.1 Phân tích lỗi": truc-00-do-luong/0.1-phan-tich-loi/bai-giang.md
+      - "0.2 Bộ đề vàng": truc-00-do-luong/0.2-bo-de-vang/bai-giang.md
+      - "0.3 Giám khảo & căn chỉnh": truc-00-do-luong/0.3-giam-khao-can-chinh/bai-giang.md
+      - "Bộ câu hỏi vàng": truc-00-do-luong/bo-cau-hoi-vang.md
+      - "Cổng 00": truc-00-do-luong/cong-00.md
+  - Cheat sheets:
+      - Eval harness: cheat-sheets/eval-harness.md
+      - Model ID: cheat-sheets/model-ids.md
+  - Sổ lỗi & test case: so-loi-test-case.md
+  - Phụ lục: phu-luc/index.md
