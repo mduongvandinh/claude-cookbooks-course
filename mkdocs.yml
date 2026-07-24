@@ -79,6 +79,12 @@ nav:
       - "4.2 Độ trễ & chi phí": truc-04-van-hanh/4.2-do-tre-chi-phi/bai-giang.md
       - "4.3 Bảo mật": truc-04-van-hanh/4.3-bao-mat/bai-giang.md
       - "Cổng 04 (Tốt nghiệp)": truc-04-van-hanh/cong-04.md
+  - "Vốn liếng tư vấn":
+      - Tổng quan: tu-van/index.md
+      - "Sổ tay luận điểm": tu-van/so-tay-luan-diem.md
+      - "Bộ câu hỏi chẩn đoán": tu-van/cau-hoi-chan-doan.md
+      - "Checklist audit hệ thống": tu-van/audit-checklist.md
+      - "Mô hình trưởng thành & pitch": tu-van/mo-hinh-truong-thanh.md
   - Cheat sheets:
       - Eval harness: cheat-sheets/eval-harness.md
       - Model ID: cheat-sheets/model-ids.md
