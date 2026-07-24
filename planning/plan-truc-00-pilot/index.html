@@ -1,0 +1,3095 @@
+
+<!doctype html>
+<html lang="vi" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Giáo trình 5 trục — xây ứng dụng LLM sản xuất">
+      
+      
+      
+        <link rel="canonical" href="https://mduongvandinh.github.io/claude-cookbooks-course/planning/plan-truc-00-pilot/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Giáo trình 5 trục — On-ramp + Trục 00 Pilot Implementation Plan - Claude Cookbooks Course</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#giao-trinh-5-truc-on-ramp-truc-00-pilot-implementation-plan" class="md-skip">
+          Bỏ qua
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Đầu trang">
+    <a href="../.." title="Claude Cookbooks Course" class="md-header__button md-logo" aria-label="Claude Cookbooks Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Claude Cookbooks Course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Giáo trình 5 trục — On-ramp + Trục 00 Pilot Implementation Plan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="Nền tối"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Nền tối" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="Nền sáng"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Nền sáng" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Tìm kiếm" placeholder="Tìm kiếm" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Tìm kiếm">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Xoá" aria-label="Xoá" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/mduongvandinh/claude-cookbooks-course" title="Xem mã nguồn" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Thanh điều hướng" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Claude Cookbooks Course" class="md-nav__button md-logo" aria-label="Claude Cookbooks Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Claude Cookbooks Course
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/mduongvandinh/claude-cookbooks-course" title="Xem mã nguồn" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trang chủ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syllabus 5 trục
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../huong-dan-giang-vien/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hướng dẫn giảng viên
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../setup-moi-truong/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cài đặt môi trường
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Buổi 0 — Nền tảng
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Buổi 0 — Nền tảng
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../on-ramp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tổng quan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../on-ramp/buoi-0-nen-tang/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nền tảng API & tool use
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trục 00 — Đo lường
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Trục 00 — Đo lường
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-00-do-luong/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tổng quan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-00-do-luong/00-ca-hong/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ca hỏng: giám khảo hỏng
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-00-do-luong/0.1-phan-tich-loi/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    0.1 Phân tích lỗi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-00-do-luong/0.2-bo-de-vang/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    0.2 Bộ đề vàng
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-00-do-luong/0.3-giam-khao-can-chinh/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    0.3 Giám khảo & căn chỉnh
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-00-do-luong/bo-cau-hoi-vang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bộ câu hỏi vàng
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-00-do-luong/cong-00/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cổng 00
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trục 01 — Truy hồi
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Trục 01 — Truy hồi
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-01-truy-hoi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tổng quan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-01-truy-hoi/00-ca-hong/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ca hỏng: chunk cắt ngang
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-01-truy-hoi/1.1-duong-co-so/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.1 Đường cơ sở
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-01-truy-hoi/1.2-chunking-sieu-du-lieu/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.2 Chunking & siêu dữ liệu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-01-truy-hoi/1.3-lai-ghep-hyde/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.3 Lai ghép, HyDE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-01-truy-hoi/1.4-xep-hang-lai/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.4 Xếp hạng lại
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-01-truy-hoi/cong-01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cổng 01
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trục 02 — Sinh
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Trục 02 — Sinh
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-02-sinh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tổng quan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-02-sinh/00-ca-hong/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ca hỏng: ngữ cảnh cám dỗ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-02-sinh/2.1-tach-loi/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Tách hai loại lỗi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-02-sinh/2.2-ngu-canh-dai/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 Ngữ cảnh dài & mâu thuẫn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-02-sinh/2.3-tu-choi/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Từ chối trả lời
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-02-sinh/cong-02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cổng 02
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trục 03 — Vòng lặp
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Trục 03 — Vòng lặp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-03-vong-lap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tổng quan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-03-vong-lap/00-ca-hong/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ca hỏng: công cụ mô tả tồi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-03-vong-lap/3.1-khi-nao-khong-agent/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.1 Khi nào không cần agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-03-vong-lap/3.2-thiet-ke-cong-cu/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.2 Thiết kế công cụ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-03-vong-lap/3.3-trang-thai-tri-nho/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.3 Trạng thái & trí nhớ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-03-vong-lap/3.4-cham-agent/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.4 Chấm agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-03-vong-lap/cong-03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cổng 03
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trục 04 — Vận hành
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Trục 04 — Vận hành
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-04-van-hanh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tổng quan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-04-van-hanh/00-ca-hong/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ca hỏng: đánh đổi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-04-van-hanh/4.1-vet-chay/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.1 Vệt chạy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-04-van-hanh/4.2-do-tre-chi-phi/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.2 Độ trễ & chi phí
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-04-van-hanh/4.3-bao-mat/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.3 Bảo mật
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-04-van-hanh/cong-04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cổng 04 (Tốt nghiệp)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vốn liếng tư vấn
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Vốn liếng tư vấn
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tu-van/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tổng quan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tu-van/so-tay-luan-diem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sổ tay luận điểm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tu-van/cau-hoi-chan-doan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bộ câu hỏi chẩn đoán
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tu-van/audit-checklist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklist audit hệ thống
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tu-van/mo-hinh-truong-thanh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mô hình trưởng thành & pitch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cheat sheets
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cheat sheets
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cheat-sheets/eval-harness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Eval harness
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cheat-sheets/model-ids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model ID
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../so-loi-test-case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sổ lỗi & test case
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phu-luc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phụ lục
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#file-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-a-trang-syllabus-html-sua-utf-8-6-iem-noi-dung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PHASE A — Trang syllabus HTML (sửa UTF-8 + 6 điểm nội dung)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PHASE A — Trang syllabus HTML (sửa UTF-8 + 6 điểm nội dung)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-khoi-tao-repo-ua-syllabus-html-vao-utf-8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1: Khởi tạo repo + đưa syllabus HTML vào (UTF-8)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-sua-6-iem-noi-dung-trong-syllabus-html" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2: Sửa 6 điểm nội dung trong syllabus HTML
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-b-scaffold-mkdocs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PHASE B — Scaffold MkDocs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PHASE B — Scaffold MkDocs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-3-dependencies-venv-mkdocsyml-landing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3: Dependencies + venv + mkdocs.yml + landing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-widget-predict-reveal-css" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4: Widget predict-reveal + CSS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-trang-khung-huong-dan-giang-vien-setup-so-loi-cheat-sheets-phu-luc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5: Trang khung — hướng dẫn giảng viên, setup, sổ lỗi, cheat sheets, phụ lục
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-c-on-ramp-buoi-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PHASE C — On-ramp Buổi 0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PHASE C — On-ramp Buổi 0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-6-buoi-0-nen-tang-api-tool-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6: Buổi 0 — nền tảng API &amp; tool use
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-d-truc-00-o-luong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PHASE D — Trục 00 (Đo lường)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PHASE D — Trục 00 (Đo lường)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-7-truc-00-tong-quan-bo-cau-hoi-vang-cong-00" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7: Trục 00 — tổng quan + bộ câu hỏi vàng + Cổng 00
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-8-bai-pha-truoc-giam-khao-hong-position-bias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 8: Bài phá trước — "giám khảo hỏng" (position bias)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-9-buoi-01-phan-tich-loi-truoc-khi-nghi-toi-chi-so" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 9: Buổi 0.1 — Phân tích lỗi trước khi nghĩ tới chỉ số
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-10-buoi-02-bo-e-vang-va-sau-loai-cau-hoi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 10: Buổi 0.2 — Bộ đề vàng và sáu loại câu hỏi
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-11-buoi-03-bo-cham-va-bai-toan-can-chinh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 11: Buổi 0.3 — Bộ chấm và bài toán căn chỉnh
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-e-deploy-kiem-thu-cuoi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PHASE E — Deploy &amp; kiểm thử cuối
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PHASE E — Deploy &amp; kiểm thử cuối">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-12-github-actions-kiem-thu-toan-site" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 12: GitHub Actions + kiểm thử toàn site
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-review-oi-chieu-spec-5-truc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-Review (đối chiếu spec 5 trục)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="giao-trinh-5-truc-on-ramp-truc-00-pilot-implementation-plan">Giáo trình 5 trục — On-ramp + Trục 00 Pilot Implementation Plan<a class="headerlink" href="#giao-trinh-5-truc-on-ramp-truc-00-pilot-implementation-plan" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (<code>- [ ]</code>) syntax for tracking.</p>
+</blockquote>
+<p><strong>Goal:</strong> Dựng repo standalone <code>claude-cookbooks-course</code> với trang syllabus HTML "5 trục" (đã sửa) làm landing, site MkDocs Material cho nội dung bài, và hoàn thiện <strong>On-ramp Buổi 0 + Trục 00 (Đo lường)</strong> làm pilot theo 4 quy tắc sư phạm + Cổng 00 phân tầng.</p>
+<p><strong>Architecture:</strong> Trang syllabus giữ nguyên HTML custom của người dùng (sửa UTF-8 + 6 điểm nội dung). Nội dung 17 buổi viết Markdown → MkDocs Material → GitHub Pages. Widget "dự đoán trước, chạy sau" port từ HTML sang JS thuần trong MkDocs. Code eval lấy cơ chế từ <code>building_evals</code>/<code>generate_test_cases</code>; phần pairwise-judge/position-bias/Cohen κ viết từ đầu (cookbook không có).</p>
+<p><strong>Tech Stack:</strong> MkDocs Material, Python venv, PyMdown Extensions, vanilla JS, GitHub Actions.</p>
+<p><strong>Spec:</strong> <code>docs/superpowers/specs/2026-07-24-giao-trinh-claude-cookbooks-design.md</code> (bản 5 trục)
+<strong>Thay thế:</strong> plan cũ <code>2026-07-24-giao-trinh-module-1-pilot.md</code> (10-module) — đã lỗi thời, không dùng.</p>
+<p><strong>Thư mục làm việc (repo mới, TÁCH BIỆT):</strong>
+<code>/Users/duongvandinh/Documents/2.Learn/AI/1.gh/mduongvandinh/claude-cookbooks-course</code> — gọi tắt <code>$COURSE</code>.</p>
+<p><strong>Quy ước bắt buộc:</strong>
+- Tiếng Việt có dấu; thuật ngữ kỹ thuật giữ tiếng Anh; commit message tiếng Việt CÓ DẤU (chỉ tên file không dấu).
+- Model ID mọi ví dụ: <code>claude-opus-4-8</code>, <code>claude-sonnet-5</code>, <code>claude-haiku-4-5</code>. Không ID cũ/có ngày.
+- Notebook gốc không sửa/không copy; tham chiếu qua link Colab.
+- Mọi file lưu UTF-8 chuẩn (không mojibake).
+- "Test" của docs = <code>mkdocs build --strict</code> không lỗi + kiểm tra thủ công widget/UTF-8/link.</p>
+<hr />
+<h2 id="file-structure">File Structure<a class="headerlink" href="#file-structure" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$COURSE/
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  README.md
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  .gitignore
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  requirements.txt
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  mkdocs.yml
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  .github/workflows/deploy-docs.yml
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  docs/
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    index.md                          # landing MkDocs: dẫn vào syllabus + lộ trình
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    syllabus.html                     # trang 5 trục HTML custom (đã sửa UTF-8 + 6 điểm)
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    huong-dan-giang-vien.md
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    setup-moi-truong.md
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    so-loi-test-case.md               # ratchet lỗi (quy tắc ③)
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    assets/
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>      stylesheets/extra.css
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>      javascripts/predict-reveal.js   # widget dự đoán (quy tắc ①)
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>      broken/
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>        giam_khao_hong.py             # bài phá trước Trục 00 (pairwise + position bias)
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    cheat-sheets/
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>      eval-harness.md                 # grader prompt, % score, Cohen κ
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>      model-ids.md
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    on-ramp/
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>      index.md
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>      buoi-0-nen-tang/                # 5 file: API, prompt, structured output, 1 vòng tool use
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    truc-00-do-luong/
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>      index.md                        # tổng quan trục + câu hỏi trung tâm + cổng
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>      00-ca-hong.md                   # bài phá trước &quot;giám khảo hỏng&quot;
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>      bo-cau-hoi-vang.md              # ratchet câu hỏi (6 câu seed từ HTML)
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>      0.1-phan-tich-loi/              # 5 file
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>      0.2-bo-de-vang/                 # 5 file
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>      0.3-giam-khao-can-chinh/        # 5 file
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>      cong-00.md                      # tiêu chí Cổng 00 phân tầng
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>    phu-luc/index.md
+</code></pre></div>
+<hr />
+<h2 id="phase-a-trang-syllabus-html-sua-utf-8-6-iem-noi-dung">PHASE A — Trang syllabus HTML (sửa UTF-8 + 6 điểm nội dung)<a class="headerlink" href="#phase-a-trang-syllabus-html-sua-utf-8-6-iem-noi-dung" title="Permanent link">&para;</a></h2>
+<h3 id="task-1-khoi-tao-repo-ua-syllabus-html-vao-utf-8">Task 1: Khởi tạo repo + đưa syllabus HTML vào (UTF-8)<a class="headerlink" href="#task-1-khoi-tao-repo-ua-syllabus-html-vao-utf-8" title="Permanent link">&para;</a></h3>
+<p><strong>Files:</strong>
+- Create: <code>$COURSE/.gitignore</code>, <code>$COURSE/README.md</code>
+- Create: <code>$COURSE/docs/syllabus.html</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Tạo thư mục + git init</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;/Users/duongvandinh/Documents/2.Learn/AI/1.gh/mduongvandinh/claude-cookbooks-course/docs&quot;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">cd</span><span class="w"> </span><span class="s2">&quot;/Users/duongvandinh/Documents/2.Learn/AI/1.gh/mduongvandinh/claude-cookbooks-course&quot;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>git<span class="w"> </span>init
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: BƯỚC THỦ CÔNG của người dùng — export artifact ra UTF-8</strong></li>
+</ul>
+<p>Người dùng mở artifact "Giáo trình 5 trục" trên claude.ai, chọn tải/xuất file HTML, lưu thành
+<code>$COURSE/docs/syllabus.html</code>. Yêu cầu: file phải là <strong>UTF-8 chuẩn</strong> (không double-encode). Nếu người
+dùng dán nội dung, executor lưu lại bằng công cụ Write (đảm bảo UTF-8), KHÔNG qua shell echo/redirect.</p>
+<ul>
+<li>[ ] <strong>Step 3: Kiểm tra encoding</strong></li>
+</ul>
+<p>Run: <code>file "$COURSE/docs/syllabus.html" &amp;&amp; grep -c "Giáo trình" "$COURSE/docs/syllabus.html"</code>
+Expected: <code>file</code> báo "UTF-8 Unicode text"; grep tìm thấy "Giáo trình" có dấu (≥ 1). Nếu grep = 0 hoặc thấy
+"GiÃ¡o trÃ¬nh" → file đang mojibake, phải xuất lại đúng UTF-8 trước khi tiếp.</p>
+<ul>
+<li>[ ] <strong>Step 4: <code>.gitignore</code> + <code>README.md</code></strong></li>
+</ul>
+<p><code>.gitignore</code>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>site/
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>.venv/
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>__pycache__/
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>*.pyc
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>.DS_Store
+</code></pre></div></p>
+<p><code>README.md</code>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="gh"># Claude Cookbooks Course — Giáo trình 5 trục</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Bootcamp 10 tuần xây ứng dụng LLM sản xuất, tổ chức theo 5 trục vấn đề, eval-first.
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Trang syllabus: <span class="sb">`docs/syllabus.html`</span>. Nội dung bài: site MkDocs (<span class="sb">`mkdocs serve`</span>).
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>Site: https://mduongvandinh.github.io/claude-cookbooks-course/
+</code></pre></div></p>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>git<span class="w"> </span>add<span class="w"> </span>.gitignore<span class="w"> </span>README.md<span class="w"> </span>docs/syllabus.html
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;chore: khởi tạo repo + trang syllabus 5 trục (UTF-8)&quot;</span>
+</code></pre></div>
+<h3 id="task-2-sua-6-iem-noi-dung-trong-syllabus-html">Task 2: Sửa 6 điểm nội dung trong syllabus HTML<a class="headerlink" href="#task-2-sua-6-iem-noi-dung-trong-syllabus-html" title="Permanent link">&para;</a></h3>
+<p><strong>Files:</strong> Modify <code>$COURSE/docs/syllabus.html</code></p>
+<p>Áp dụng 6 chỉnh sửa (dùng Edit trên file UTF-8). Mỗi bước nêu rõ chèn/sửa gì.</p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: Thêm Buổi 0 on-ramp</strong> — trong <code>&lt;table class="tbl"&gt;</code> của mục "Bản đồ 5 trục", thêm một dòng
+  TRƯỚC dòng "00 · Đo lường":
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>0 · Nền tảng<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>Gọi API, prompt, structured output, một vòng tool use (on-ramp cho người mới)<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;num&quot;</span><span class="p">&gt;</span>1<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+</code></pre></div>
+  Và thêm một đoạn <code>&lt;p&gt;</code> dưới <code>.sub</code> của mục đó: "Buổi 0 là on-ramp cho lớp hỗn hợp trình độ — người mới học
+  cơ chế gọi API/prompt/tool trước khi vào trục 00. Không có cổng, là prerequisite."</p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: Cắt Multimodal tường minh</strong> — thêm một <code>&lt;div class="cut"&gt;</code> mới trong mục "Bản đồ 5 trục" (sau
+  phần corpus), nội dung:
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;cut&quot;</span><span class="p">&gt;&lt;</span><span class="nt">h4</span><span class="p">&gt;</span>Cắt khỏi toàn khoá<span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;&lt;</span><span class="nt">li</span><span class="p">&gt;&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>Multimodal (vision, đọc chart, PDF)<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;</span> — cookbook mạnh phần này nhưng corpus toàn text,
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>nên cắt tường minh theo quy tắc ④. Đưa vào phụ lục tuỳ chọn nếu học viên có nhu cầu ảnh/tài liệu quét.<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;&lt;/</span><span class="nt">ul</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>[ ] <strong>Step 3: Thêm action layer vào corpus</strong> — trong <code>.card</code> "Vì sao corpus này", thêm một <code>&lt;li&gt;</code>:
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>Có lớp hành động<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;</span> — kèm vài mock tool/API (tra bản ghi, cập nhật trạng thái, mở ticket) để trục 03 có action surface thật, không chỉ đọc tài liệu.<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>[ ] <strong>Step 4: Cổng phân tầng</strong> — trong mỗi <code>.gate-in</code>, thêm một <code>&lt;p&gt;</code> mở đầu:
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;&lt;</span><span class="nt">em</span><span class="p">&gt;</span>Hai ngưỡng: &quot;tối thiểu để đi tiếp&quot; (đủ vượt cổng) và &quot;đạt chuẩn&quot; (mức Vững). Lớp hỗn hợp có buổi remediation nếu chưa đạt tối thiểu.<span class="p">&lt;/</span><span class="nt">em</span><span class="p">&gt;&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>[ ] <strong>Step 5: Giãn lịch 10 tuần</strong> — trong <code>&lt;table&gt;</code> mục "Lịch chạy", tách tuần 9 (đang có 3 buổi
+  "4.2 · 4.3 · Đổi máy") thành:
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>9<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>4.2 Độ trễ <span class="ni">&amp;amp;</span> chi phí · 4.3 Bảo mật<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;num&quot;</span><span class="p">&gt;</span>—<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>10<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>Đổi máy · Chấm Cổng 04<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;num&quot;</span><span class="p">&gt;</span>Cổng 04<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+</code></pre></div>
+  Và sửa <code>&lt;h2&gt;</code> mục đó thành "Mười tuần, hai buổi mỗi tuần", cùng eyebrow "17 buổi · 10 tuần" ở hero.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 6: Sửa tiêu đề trục 00</strong> — trong <code>.axis-meta</code> của trục 00, giữ "3 buổi" nhưng ghi chú Buổi 0 đứng
+  trước: thêm <code>&lt;br&gt;&lt;span style="color:var(--gate)"&gt;+ Buổi 0 on-ramp&lt;/span&gt;</code>.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 7: Kiểm tra + commit</strong></p>
+</li>
+</ul>
+<p>Run: <code>grep -c "Buổi 0" "$COURSE/docs/syllabus.html"</code> → Expected: ≥ 2. Mở file trong trình duyệt, xác nhận
+tiếng Việt đúng, không mojibake, widget predict-reveal + ratchet vẫn chạy.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>git<span class="w"> </span>add<span class="w"> </span>docs/syllabus.html
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: sửa syllabus — on-ramp, cắt multimodal, action layer, cổng phân tầng, lịch 10 tuần&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="phase-b-scaffold-mkdocs">PHASE B — Scaffold MkDocs<a class="headerlink" href="#phase-b-scaffold-mkdocs" title="Permanent link">&para;</a></h2>
+<h3 id="task-3-dependencies-venv-mkdocsyml-landing">Task 3: Dependencies + venv + mkdocs.yml + landing<a class="headerlink" href="#task-3-dependencies-venv-mkdocsyml-landing" title="Permanent link">&para;</a></h3>
+<p><strong>Files:</strong>
+- Create: <code>$COURSE/requirements.txt</code>, <code>$COURSE/mkdocs.yml</code>, <code>$COURSE/docs/index.md</code></p>
+<ul>
+<li>[ ] <strong>Step 1: <code>requirements.txt</code></strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>mkdocs-material&gt;=9.5
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>pymdown-extensions&gt;=10.7
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: venv + cài + kiểm tra</strong></li>
+</ul>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nb">cd</span><span class="w"> </span><span class="s2">&quot;/Users/duongvandinh/Documents/2.Learn/AI/1.gh/mduongvandinh/claude-cookbooks-course&quot;</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>mkdocs<span class="w"> </span>--version
+</code></pre></div>
+Expected: in ra version mkdocs.</p>
+<ul>
+<li>[ ] <strong>Step 3: <code>mkdocs.yml</code></strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Claude Cookbooks Course</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nt">site_description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Giáo trình 5 trục — xây ứng dụng LLM sản xuất</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="nt">site_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mduongvandinh.github.io/claude-cookbooks-course/</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="nt">repo_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/mduongvandinh/claude-cookbooks-course</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="nt">theme</span><span class="p">:</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">material</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">  </span><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vi</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">  </span><span class="nt">features</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">navigation.sections</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">navigation.top</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">content.code.copy</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">content.tabs.link</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">search.highlight</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">  </span><span class="nt">palette</span><span class="p">:</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="w">      </span><span class="nt">primary</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">teal</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="w">      </span><span class="nt">toggle</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="nv">material/weather-night</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">Nền tối</span><span class="p p-Indicator">}</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">slate</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="w">      </span><span class="nt">primary</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">teal</span>
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="w">      </span><span class="nt">toggle</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="nv">material/weather-sunny</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">Nền sáng</span><span class="p p-Indicator">}</span>
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="nt">markdown_extensions</span><span class="p">:</span>
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admonition</span>
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">attr_list</span>
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">md_in_html</span>
+<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">toc</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">permalink</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">}</span>
+<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pymdownx.details</span>
+<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pymdownx.superfences</span>
+<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pymdownx.highlight</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">anchor_linenums</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">}</span>
+<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pymdownx.tabbed</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">alternate_style</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">}</span>
+<a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a><span class="nt">extra_css</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">assets/stylesheets/extra.css</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a><span class="nt">extra_javascript</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">assets/javascripts/predict-reveal.js</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a><span class="nt">nav</span><span class="p">:</span>
+<a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Trang chủ</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">index.md</span>
+<a id="__codelineno-13-29" name="__codelineno-13-29" href="#__codelineno-13-29"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Syllabus</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">trục&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">syllabus.html</span>
+<a id="__codelineno-13-30" name="__codelineno-13-30" href="#__codelineno-13-30"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Hướng dẫn giảng viên</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">huong-dan-giang-vien.md</span>
+<a id="__codelineno-13-31" name="__codelineno-13-31" href="#__codelineno-13-31"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Cài đặt môi trường</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">setup-moi-truong.md</span>
+<a id="__codelineno-13-32" name="__codelineno-13-32" href="#__codelineno-13-32"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Buổi</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">Nền</span><span class="nv"> </span><span class="s">tảng&quot;</span><span class="p p-Indicator">:</span>
+<a id="__codelineno-13-33" name="__codelineno-13-33" href="#__codelineno-13-33"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Tổng quan</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">on-ramp/index.md</span>
+<a id="__codelineno-13-34" name="__codelineno-13-34" href="#__codelineno-13-34"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Nền</span><span class="nv"> </span><span class="s">tảng</span><span class="nv"> </span><span class="s">API</span><span class="nv"> </span><span class="s">&amp;</span><span class="nv"> </span><span class="s">tool</span><span class="nv"> </span><span class="s">use&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">on-ramp/buoi-0-nen-tang/bai-giang.md</span>
+<a id="__codelineno-13-35" name="__codelineno-13-35" href="#__codelineno-13-35"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Trục</span><span class="nv"> </span><span class="s">00</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">Đo</span><span class="nv"> </span><span class="s">lường&quot;</span><span class="p p-Indicator">:</span>
+<a id="__codelineno-13-36" name="__codelineno-13-36" href="#__codelineno-13-36"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Tổng quan</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">truc-00-do-luong/index.md</span>
+<a id="__codelineno-13-37" name="__codelineno-13-37" href="#__codelineno-13-37"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Ca</span><span class="nv"> </span><span class="s">hỏng:</span><span class="nv"> </span><span class="s">giám</span><span class="nv"> </span><span class="s">khảo</span><span class="nv"> </span><span class="s">hỏng&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">truc-00-do-luong/00-ca-hong.md</span>
+<a id="__codelineno-13-38" name="__codelineno-13-38" href="#__codelineno-13-38"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;0.1</span><span class="nv"> </span><span class="s">Phân</span><span class="nv"> </span><span class="s">tích</span><span class="nv"> </span><span class="s">lỗi&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">truc-00-do-luong/0.1-phan-tich-loi/bai-giang.md</span>
+<a id="__codelineno-13-39" name="__codelineno-13-39" href="#__codelineno-13-39"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;0.2</span><span class="nv"> </span><span class="s">Bộ</span><span class="nv"> </span><span class="s">đề</span><span class="nv"> </span><span class="s">vàng&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">truc-00-do-luong/0.2-bo-de-vang/bai-giang.md</span>
+<a id="__codelineno-13-40" name="__codelineno-13-40" href="#__codelineno-13-40"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;0.3</span><span class="nv"> </span><span class="s">Giám</span><span class="nv"> </span><span class="s">khảo</span><span class="nv"> </span><span class="s">&amp;</span><span class="nv"> </span><span class="s">căn</span><span class="nv"> </span><span class="s">chỉnh&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">truc-00-do-luong/0.3-giam-khao-can-chinh/bai-giang.md</span>
+<a id="__codelineno-13-41" name="__codelineno-13-41" href="#__codelineno-13-41"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Bộ</span><span class="nv"> </span><span class="s">câu</span><span class="nv"> </span><span class="s">hỏi</span><span class="nv"> </span><span class="s">vàng&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">truc-00-do-luong/bo-cau-hoi-vang.md</span>
+<a id="__codelineno-13-42" name="__codelineno-13-42" href="#__codelineno-13-42"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Cổng</span><span class="nv"> </span><span class="s">00&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">truc-00-do-luong/cong-00.md</span>
+<a id="__codelineno-13-43" name="__codelineno-13-43" href="#__codelineno-13-43"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Cheat sheets</span><span class="p">:</span>
+<a id="__codelineno-13-44" name="__codelineno-13-44" href="#__codelineno-13-44"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Eval harness</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cheat-sheets/eval-harness.md</span>
+<a id="__codelineno-13-45" name="__codelineno-13-45" href="#__codelineno-13-45"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Model ID</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cheat-sheets/model-ids.md</span>
+<a id="__codelineno-13-46" name="__codelineno-13-46" href="#__codelineno-13-46"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Sổ lỗi &amp; test case</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">so-loi-test-case.md</span>
+<a id="__codelineno-13-47" name="__codelineno-13-47" href="#__codelineno-13-47"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Phụ lục</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">phu-luc/index.md</span>
+</code></pre></div>
+<ul>
+<li>
+<p>[ ] <strong>Step 4: <code>docs/index.md</code></strong> — landing MkDocs, nội dung bắt buộc: (1) <code># Giáo trình 5 trục</code>; (2) đoạn
+  giới thiệu eval-first, 5 trục, cohort 10 tuần; (3) link nổi bật tới <code>syllabus.html</code> ("Xem bản đồ 5 trục đầy đủ");
+  (4) "## Bắt đầu" → link <code>setup-moi-truong.md</code> → <code>on-ramp/index.md</code>; (5) một khối <code>.predict</code> demo.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 5: Build (không strict vì nhiều file chưa có) + commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>mkdocs<span class="w"> </span>build<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-5
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>git<span class="w"> </span>add<span class="w"> </span>requirements.txt<span class="w"> </span>mkdocs.yml<span class="w"> </span>docs/index.md
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: scaffold mkdocs material + nav 5 trục&quot;</span>
+</code></pre></div>
+<h3 id="task-4-widget-predict-reveal-css">Task 4: Widget predict-reveal + CSS<a class="headerlink" href="#task-4-widget-predict-reveal-css" title="Permanent link">&para;</a></h3>
+<p><strong>Files:</strong> Create <code>$COURSE/docs/assets/javascripts/predict-reveal.js</code>, <code>$COURSE/docs/assets/stylesheets/extra.css</code></p>
+<ul>
+<li>[ ] <strong>Step 1: <code>predict-reveal.js</code></strong> (min 25 ký tự, khớp hành vi HTML syllabus)</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1">// Widget &quot;Dự đoán trước, chạy sau&quot; (quy tắc ①). Ô .predict-result ẩn tới khi gõ dự đoán &gt;= 25 ký tự.</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;DOMContentLoaded&quot;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s2">&quot;.predict&quot;</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">box</span><span class="p">,</span><span class="w"> </span><span class="nx">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">box</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&quot;.predict-input&quot;</span><span class="p">);</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">btn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">box</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&quot;.predict-btn&quot;</span><span class="p">);</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">box</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&quot;.predict-result&quot;</span><span class="p">);</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">input</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="nx">btn</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="nx">result</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;predict:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">i</span><span class="p">;</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">MIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">25</span><span class="p">;</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">    </span><span class="kd">function</span><span class="w"> </span><span class="nx">reveal</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="w">      </span><span class="nx">input</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;disabled&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;disabled&quot;</span><span class="p">);</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">      </span><span class="nx">btn</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;disabled&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;disabled&quot;</span><span class="p">);</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="w">      </span><span class="nx">btn</span><span class="p">.</span><span class="nx">textContent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Đã khoá — đối chiếu bên dưới&quot;</span><span class="p">;</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w">      </span><span class="nx">result</span><span class="p">.</span><span class="nx">hidden</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="w">      </span><span class="nx">box</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;revealed&quot;</span><span class="p">);</span>
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">saved</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">saved</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">saved</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">input</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">saved</span><span class="p">;</span><span class="w"> </span><span class="nx">reveal</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="w">    </span><span class="nx">input</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a><span class="w">      </span><span class="nx">btn</span><span class="p">.</span><span class="nx">disabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">input</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">trim</span><span class="p">().</span><span class="nx">length</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nx">MIN</span><span class="p">;</span>
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a><span class="w">    </span><span class="p">});</span>
+<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a><span class="w">    </span><span class="nx">btn</span><span class="p">.</span><span class="nx">disabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a><span class="w">    </span><span class="nx">btn</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">trim</span><span class="p">().</span><span class="nx">length</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nx">MIN</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a><span class="w">      </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span><span class="w"> </span><span class="nx">input</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">trim</span><span class="p">());</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a><span class="w">      </span><span class="nx">reveal</span><span class="p">();</span>
+<a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a><span class="w">    </span><span class="p">});</span>
+<a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a><span class="w">  </span><span class="p">});</span>
+<a id="__codelineno-15-30" name="__codelineno-15-30" href="#__codelineno-15-30"></a><span class="p">});</span>
+</code></pre></div>
+<ul>
+<li>
+<p>[ ] <strong>Step 2: <code>extra.css</code></strong> — style <code>.predict</code>, <code>.predict-input</code>, <code>.predict-btn</code>, <code>.predict-result</code>,
+  <code>.tool-justify</code> (thẻ biện minh công cụ). Dùng biến màu Material (<code>--md-primary-fg-color</code>,
+  <code>--md-code-bg-color</code>). Tối thiểu: viền trái nhấn màu, input full-width min-height 3.5rem, nút primary,
+  <code>.predict-result</code> khi ẩn dùng thuộc tính <code>hidden</code>.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 3: Thêm widget demo vào <code>docs/index.md</code></strong> (khối <code>.predict</code> với <code>&lt;textarea class="predict-input"&gt;</code>,
+  <code>&lt;button class="predict-btn"&gt;</code>, <code>&lt;div class="predict-result" hidden markdown&gt;</code>), rồi <code>mkdocs serve</code> kiểm tra
+  khoá/mở đúng.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 4: Commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>git<span class="w"> </span>add<span class="w"> </span>docs/assets<span class="w"> </span>docs/index.md
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: widget predict-reveal + css (quy tắc 1)&quot;</span>
+</code></pre></div>
+<h3 id="task-5-trang-khung-huong-dan-giang-vien-setup-so-loi-cheat-sheets-phu-luc">Task 5: Trang khung — hướng dẫn giảng viên, setup, sổ lỗi, cheat sheets, phụ lục<a class="headerlink" href="#task-5-trang-khung-huong-dan-giang-vien-setup-so-loi-cheat-sheets-phu-luc" title="Permanent link">&para;</a></h3>
+<p><strong>Files:</strong> Create <code>huong-dan-giang-vien.md</code>, <code>setup-moi-truong.md</code>, <code>so-loi-test-case.md</code>,
+<code>cheat-sheets/eval-harness.md</code>, <code>cheat-sheets/model-ids.md</code>, <code>phu-luc/index.md</code></p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: <code>huong-dan-giang-vien.md</code></strong> — bắt buộc: 4 quy tắc sư phạm đầy đủ; giải thích cấu trúc 5 file/buổi;
+  giải thích cơ chế cổng phân tầng + đổi máy; checklist chuẩn bị (đạt 28/30 câu hỏi vàng, chạy thử notebook Colab,
+  chốt corpus + action layer ở buổi 0.1).</p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: <code>setup-moi-truong.md</code></strong> — bắt buộc: lấy API key (<code>export ANTHROPIC_API_KEY=...</code>, cảnh báo không
+  commit); <code>pip install anthropic</code>; chạy notebook Colab; admonition cảnh báo model ID cũ trong notebook
+  (<code>claude-opus-4-1</code>, <code>claude-sonnet-4-6</code>) → giáo trình dùng alias hiện tại; link <code>cheat-sheets/model-ids.md</code>.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 3: <code>cheat-sheets/eval-harness.md</code></strong> — chứa code chuẩn (dùng nguyên):</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">anthropic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Anthropic</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="n">client</span> <span class="o">=</span> <span class="n">Anthropic</span><span class="p">()</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;claude-sonnet-5&quot;</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_completion</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">2048</span><span class="p">):</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>    <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">MODEL_NAME</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="n">max_tokens</span><span class="p">,</span> <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">)</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="c1"># --- Chấm bằng model (single-output, rubric) — mẫu từ building_evals ---</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="k">def</span><span class="w"> </span><span class="nf">build_grader_prompt</span><span class="p">(</span><span class="n">answer</span><span class="p">,</span> <span class="n">rubric</span><span class="p">):</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>    <span class="n">content</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>        <span class="s2">&quot;Bạn được cho một câu trả lời và một rubric.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>        <span class="sa">f</span><span class="s2">&quot;&lt;answer&gt;</span><span class="si">{</span><span class="n">answer</span><span class="si">}</span><span class="s2">&lt;/answer&gt;</span><span class="se">\n</span><span class="s2">&lt;rubric&gt;</span><span class="si">{</span><span class="n">rubric</span><span class="si">}</span><span class="s2">&lt;/rubric&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>        <span class="s2">&quot;Suy nghĩ trong &lt;thinking&gt;&lt;/thinking&gt;. Sau đó xuất &#39;correct&#39; hoặc &#39;incorrect&#39; trong &lt;correctness&gt;&lt;/correctness&gt;.&quot;</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>    <span class="p">)</span>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>    <span class="k">return</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">}]</span>
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="k">def</span><span class="w"> </span><span class="nf">grade</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">rubric</span><span class="p">):</span>
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>    <span class="n">completion</span> <span class="o">=</span> <span class="n">get_completion</span><span class="p">(</span><span class="n">build_grader_prompt</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">rubric</span><span class="p">))</span>
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>    <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;correctness&gt;(.*?)&lt;/correctness&gt;&quot;</span><span class="p">,</span> <span class="n">completion</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="p">:</span>
+<a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Không tìm thấy thẻ &lt;correctness&gt;&quot;</span><span class="p">)</span>
+<a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a>    <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a>
+<a id="__codelineno-17-26" name="__codelineno-17-26" href="#__codelineno-17-26"></a><span class="c1"># --- Cohen kappa (stdlib thuần) — đo đồng thuận giám khảo vs người ---</span>
+<a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a><span class="k">def</span><span class="w"> </span><span class="nf">cohen_kappa</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<a id="__codelineno-17-28" name="__codelineno-17-28" href="#__codelineno-17-28"></a>    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<a id="__codelineno-17-29" name="__codelineno-17-29" href="#__codelineno-17-29"></a>    <span class="n">po</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>
+<a id="__codelineno-17-30" name="__codelineno-17-30" href="#__codelineno-17-30"></a>    <span class="n">ca</span><span class="p">,</span> <span class="n">cb</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">Counter</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<a id="__codelineno-17-31" name="__codelineno-17-31" href="#__codelineno-17-31"></a>    <span class="n">pe</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">((</span><span class="n">ca</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">cb</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+<a id="__codelineno-17-32" name="__codelineno-17-32" href="#__codelineno-17-32"></a>    <span class="k">return</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">pe</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="p">(</span><span class="n">po</span> <span class="o">-</span> <span class="n">pe</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pe</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>
+<p>[ ] <strong>Step 4: <code>cheat-sheets/model-ids.md</code></strong> — bảng Opus <code>claude-opus-4-8</code> / Sonnet <code>claude-sonnet-5</code> /
+  Haiku <code>claude-haiku-4-5</code> + ghi chú notebook nguồn có ID cũ.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 5: <code>so-loi-test-case.md</code></strong> — giải thích quy tắc ③ cho học viên; bảng "Lỗi | Nguyên nhân | Test case"
+  seed 1 dòng từ ca hỏng Trục 00 (position bias: đo A vs B mà không hoán đổi vị trí).</p>
+</li>
+<li>
+<p>[ ] <strong>Step 6: <code>phu-luc/index.md</code></strong> — danh mục notebook tham khảo ngoài mạch chính (Multimodal đã cắt, Managed
+  Agents, Skills, third-party...) với link Colab; ghi rõ tuỳ chọn mở rộng.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 7: Build strict + commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>mkdocs<span class="w"> </span>build<span class="w"> </span>--strict<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-10
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>git<span class="w"> </span>add<span class="w"> </span>docs/huong-dan-giang-vien.md<span class="w"> </span>docs/setup-moi-truong.md<span class="w"> </span>docs/so-loi-test-case.md<span class="w"> </span>docs/cheat-sheets<span class="w"> </span>docs/phu-luc
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: trang khung — hướng dẫn giảng viên, setup, cheat sheet eval, phụ lục&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="phase-c-on-ramp-buoi-0">PHASE C — On-ramp Buổi 0<a class="headerlink" href="#phase-c-on-ramp-buoi-0" title="Permanent link">&para;</a></h2>
+<h3 id="task-6-buoi-0-nen-tang-api-tool-use">Task 6: Buổi 0 — nền tảng API &amp; tool use<a class="headerlink" href="#task-6-buoi-0-nen-tang-api-tool-use" title="Permanent link">&para;</a></h3>
+<p><strong>Files:</strong> Create <code>on-ramp/index.md</code> + <code>on-ramp/buoi-0-nen-tang/</code> (5 file: <code>bai-giang.md</code>, <code>instructor-notes.md</code>,
+<code>bai-tap.md</code>, <code>loi-giai.md</code>, <code>slide-outline.md</code>)</p>
+<p><strong>Code nguồn (chuẩn hoá model <code>claude-sonnet-5</code>):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">anthropic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Anthropic</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="n">client</span> <span class="o">=</span> <span class="n">Anthropic</span><span class="p">()</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;claude-sonnet-5&quot;</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="c1"># (a) Gọi API cơ bản</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="n">msg</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">MODEL_NAME</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Tóm tắt đoạn sau trong 1 câu: ...&quot;</span><span class="p">}])</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="c1"># (b) Một vòng tool use (từ calculator_tool)</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="n">tools</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;calculator&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Thực hiện phép tính số học.&quot;</span><span class="p">,</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>    <span class="s2">&quot;input_schema&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span> <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;expression&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">}},</span> <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;expression&quot;</span><span class="p">]}}]</span>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="n">r</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">MODEL_NAME</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span>
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Tính 1984135 * 9343116&quot;</span><span class="p">}])</span>
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">stop_reason</span> <span class="o">==</span> <span class="s2">&quot;tool_use&quot;</span><span class="p">:</span>
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>    <span class="n">tu</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">content</span> <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;tool_use&quot;</span><span class="p">)</span>
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a>    <span class="n">result</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">tu</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="s2">&quot;expression&quot;</span><span class="p">]))</span>  <span class="c1"># demo, eval KHÔNG an toàn production</span>
+<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a>    <span class="n">r2</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">MODEL_NAME</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span> <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
+<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a>        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Tính 1984135 * 9343116&quot;</span><span class="p">},</span>
+<a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a>        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;assistant&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">},</span>
+<a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a>        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;tool_result&quot;</span><span class="p">,</span> <span class="s2">&quot;tool_use_id&quot;</span><span class="p">:</span> <span class="n">tu</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">}]}])</span>
+<a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a>
+<a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a><span class="c1"># (c) Structured output bằng tool (từ extracting_structured_json)</span>
+<a id="__codelineno-19-23" name="__codelineno-19-23" href="#__codelineno-19-23"></a><span class="n">tools2</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;print_sentiment_scores&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;In điểm cảm xúc.&quot;</span><span class="p">,</span>
+<a id="__codelineno-19-24" name="__codelineno-19-24" href="#__codelineno-19-24"></a>    <span class="s2">&quot;input_schema&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span> <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+<a id="__codelineno-19-25" name="__codelineno-19-25" href="#__codelineno-19-25"></a>        <span class="s2">&quot;positive&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">},</span> <span class="s2">&quot;negative&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">},</span> <span class="s2">&quot;neutral&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">}},</span>
+<a id="__codelineno-19-26" name="__codelineno-19-26" href="#__codelineno-19-26"></a>        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;positive&quot;</span><span class="p">,</span> <span class="s2">&quot;negative&quot;</span><span class="p">,</span> <span class="s2">&quot;neutral&quot;</span><span class="p">]}}]</span>
+<a id="__codelineno-19-27" name="__codelineno-19-27" href="#__codelineno-19-27"></a><span class="n">r3</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">MODEL_NAME</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools2</span><span class="p">,</span>
+<a id="__codelineno-19-28" name="__codelineno-19-28" href="#__codelineno-19-28"></a>    <span class="n">tool_choice</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;tool&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;print_sentiment_scores&quot;</span><span class="p">},</span>
+<a id="__codelineno-19-29" name="__codelineno-19-29" href="#__codelineno-19-29"></a>    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Sản phẩm này tuyệt vời!&quot;</span><span class="p">}])</span>
+<a id="__codelineno-19-30" name="__codelineno-19-30" href="#__codelineno-19-30"></a><span class="n">scores</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">input</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">r3</span><span class="o">.</span><span class="n">content</span> <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;tool_use&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: <code>on-ramp/index.md</code></strong> — mục tiêu on-ramp, ai cần học (người mới), 3 kỹ năng: gọi API, một vòng
+  tool use, structured output; link Colab <code>calculator_tool</code>, <code>extracting_structured_json</code>, <code>how_to_enable_json_mode</code>.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: <code>bai-giang.md</code></strong> theo template: tiêu đề <code># Buổi 0 — Nền tảng: gọi được Claude và một vòng tool use</code>;
+  mục tiêu; <code>.predict</code> ("Claude không tự tính số lớn chính xác — dự đoán nó trả về đáp số hay yêu cầu gọi tool?");
+  đi qua 3 khối code (a)(b)(c) kèm "vì sao"; <code>.tool-justify</code> cho tool calculator; <code>??? note "Đi sâu"</code> về <code>eval()</code>
+  không an toàn + <code>tool_choice</code>; lỗi thường gặp (quên <code>tool_use_id</code>, sai <code>stop_reason</code>); tóm tắt + link Trục 00.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 3–5:</strong> <code>instructor-notes.md</code> (thời lượng ~90 phút vì lớp hỗn hợp; điểm người mới hay vấp), <code>bai-tap.md</code>
+  (Core: thêm phép chia + chặn chia 0; Đi sâu: structured output cho một field lồng nhau — "Dự đoán trước"),
+  <code>loi-giai.md</code> (code đầy đủ + rubric), <code>slide-outline.md</code> (8–10 slide).</p>
+</li>
+<li>
+<p>[ ] <strong>Step 6: Build strict + <code>mkdocs serve</code> kiểm tra widget + commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>mkdocs<span class="w"> </span>build<span class="w"> </span>--strict<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-10
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>git<span class="w"> </span>add<span class="w"> </span>docs/on-ramp
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat(on-ramp): buổi 0 nền tảng API &amp; tool use&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="phase-d-truc-00-o-luong">PHASE D — Trục 00 (Đo lường)<a class="headerlink" href="#phase-d-truc-00-o-luong" title="Permanent link">&para;</a></h2>
+<h3 id="task-7-truc-00-tong-quan-bo-cau-hoi-vang-cong-00">Task 7: Trục 00 — tổng quan + bộ câu hỏi vàng + Cổng 00<a class="headerlink" href="#task-7-truc-00-tong-quan-bo-cau-hoi-vang-cong-00" title="Permanent link">&para;</a></h3>
+<p><strong>Files:</strong> Create <code>truc-00-do-luong/index.md</code>, <code>truc-00-do-luong/bo-cau-hoi-vang.md</code>, <code>truc-00-do-luong/cong-00.md</code></p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: <code>index.md</code></strong> — câu hỏi trung tâm ("Làm sao biết hệ thống tốt lên hay xấu đi mà không phải cảm
+  tính?"); vì sao trục này đi trước tất cả (điều kiện cần của 4 trục sau); bảng 3 buổi (0.1/0.2/0.3) + "vấn đề
+  giải quyết"; nhắc chốt corpus + action layer ở buổi 0.1; link Colab <code>building_evals</code>, <code>generate_test_cases</code>.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: <code>bo-cau-hoi-vang.md</code></strong> — quy tắc ③; bảng "Câu hỏi | Trả lời (điền dần)" seed <strong>6 câu Trục 00 lấy
+  từ syllabus HTML</strong> (giám khảo đồng ý 85% đủ chưa; vì sao nhãn nhị phân tốt hơn thang 1–5; sao không để model tự
+  sinh 1000 test; bộ đề 30 câu có 28 câu dữ kiện vấn đề ở đâu; điểm eval tăng 4% sao biết không phải nhiễu; vì sao
+  không viết xong tiêu chí chấm trước khi chấm) + đáp án ngắn cho mỗi câu.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 3: <code>cong-00.md</code></strong> — Cổng 00 phân tầng. Nêu rõ 3 điều kiện + 2 ngưỡng (tối thiểu/đạt chuẩn):</p>
+</li>
+<li>Bộ đề vàng: tối thiểu ≥ 24 câu / đạt chuẩn ≥ 30 câu, đủ 6 loại (mỗi loại ≥ 3).</li>
+<li>Giám khảo: tối thiểu Cohen κ ≥ 0.4 / đạt chuẩn ≥ 0.6 trên 50 mẫu giữ riêng.</li>
+<li>Một lệnh CLI ra một con số, lặp 2 lần chênh &lt; 2%.</li>
+<li>
+<p>Ghi rõ: chưa đạt tối thiểu → buổi remediation, không sang Trục 01.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 4: Build strict + commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>mkdocs<span class="w"> </span>build<span class="w"> </span>--strict<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-10
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>git<span class="w"> </span>add<span class="w"> </span>docs/truc-00-do-luong/index.md<span class="w"> </span>docs/truc-00-do-luong/bo-cau-hoi-vang.md<span class="w"> </span>docs/truc-00-do-luong/cong-00.md
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat(trục00): tổng quan + bộ câu hỏi vàng + cổng 00 phân tầng&quot;</span>
+</code></pre></div>
+<h3 id="task-8-bai-pha-truoc-giam-khao-hong-position-bias">Task 8: Bài phá trước — "giám khảo hỏng" (position bias)<a class="headerlink" href="#task-8-bai-pha-truoc-giam-khao-hong-position-bias" title="Permanent link">&para;</a></h3>
+<p><strong>Files:</strong> Create <code>$COURSE/docs/assets/broken/giam_khao_hong.py</code>, <code>truc-00-do-luong/00-ca-hong.md</code></p>
+<p><strong>Code (viết từ đầu — cookbook không có pairwise judge; đây là bản HỎNG chỉ chấm một chiều):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="sd">CA HỎNG — Trục 00. Bộ chấm so cặp: đưa hai câu trả lời A và B, giám khảo (model) chọn cái tốt hơn.</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="sd">Trên 200 cặp, A thắng 65%. Học viên kết luận &quot;cấu hình A tốt hơn&quot;. NHIỆM VỤ: bản này sai ở đâu?</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">anthropic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Anthropic</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="n">client</span> <span class="o">=</span> <span class="n">Anthropic</span><span class="p">()</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;claude-sonnet-5&quot;</span>
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="k">def</span><span class="w"> </span><span class="nf">judge_once</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">answer_first</span><span class="p">,</span> <span class="n">answer_second</span><span class="p">):</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>    <span class="n">prompt</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a>        <span class="sa">f</span><span class="s2">&quot;Câu hỏi: </span><span class="si">{</span><span class="n">question</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a>        <span class="sa">f</span><span class="s2">&quot;Câu trả lời A: </span><span class="si">{</span><span class="n">answer_first</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a>        <span class="sa">f</span><span class="s2">&quot;Câu trả lời B: </span><span class="si">{</span><span class="n">answer_second</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a>        <span class="s2">&quot;Câu nào tốt hơn? Chỉ xuất &#39;A&#39; hoặc &#39;B&#39; trong &lt;winner&gt;&lt;/winner&gt;.&quot;</span>
+<a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a>    <span class="p">)</span>
+<a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a>    <span class="n">out</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">MODEL_NAME</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+<a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a>        <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}])</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+<a id="__codelineno-22-19" name="__codelineno-22-19" href="#__codelineno-22-19"></a>    <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;winner&gt;(.*?)&lt;/winner&gt;&quot;</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+<a id="__codelineno-22-20" name="__codelineno-22-20" href="#__codelineno-22-20"></a>    <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-22-21" name="__codelineno-22-21" href="#__codelineno-22-21"></a>
+<a id="__codelineno-22-22" name="__codelineno-22-22" href="#__codelineno-22-22"></a><span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="n">pairs</span><span class="p">):</span>
+<a id="__codelineno-22-23" name="__codelineno-22-23" href="#__codelineno-22-23"></a>    <span class="c1"># LỖI: luôn đặt cấu hình A ở vị trí đầu, cấu hình B ở vị trí sau — không hoán đổi.</span>
+<a id="__codelineno-22-24" name="__codelineno-22-24" href="#__codelineno-22-24"></a>    <span class="n">wins_a</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-22-25" name="__codelineno-22-25" href="#__codelineno-22-25"></a>    <span class="k">for</span> <span class="n">q</span><span class="p">,</span> <span class="n">ans_a</span><span class="p">,</span> <span class="n">ans_b</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+<a id="__codelineno-22-26" name="__codelineno-22-26" href="#__codelineno-22-26"></a>        <span class="k">if</span> <span class="n">judge_once</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">ans_a</span><span class="p">,</span> <span class="n">ans_b</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;A&quot;</span><span class="p">:</span>
+<a id="__codelineno-22-27" name="__codelineno-22-27" href="#__codelineno-22-27"></a>            <span class="n">wins_a</span> <span class="o">+=</span> <span class="mi">1</span>
+<a id="__codelineno-22-28" name="__codelineno-22-28" href="#__codelineno-22-28"></a>    <span class="k">return</span> <span class="n">wins_a</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span>
+</code></pre></div></p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: Viết <code>giam_khao_hong.py</code></strong> (nội dung trên).</p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: Viết <code>00-ca-hong.md</code></strong> — bắt buộc: <code># Ca hỏng — Giám khảo hỏng</code>; bối cảnh (A thắng 65% trên 200
+  cặp); nhúng code <code>giam_khao_hong.py</code>; <code>.predict</code> ("Bạn yêu cầu chạy lại đúng 200 cặp nhưng hoán đổi vị trí A và
+  B. Dự đoán tỉ lệ thắng sẽ ra sao?"); trong <code>.predict-result</code>: giải thích <strong>position bias</strong> — tỉ lệ thắng của
+  <em>vị trí thứ nhất</em> gần như không đổi (~60–65%) dù đã hoán nội dung; cái đo được là thiên lệch vị trí, không phải
+  chất lượng A. Bản sửa: chạy cả hai chiều rồi lấy trung bình, hoặc chuyển sang chấm nhị phân từng câu. Kết bằng
+  quy tắc ①/②; feed lỗi vào <code>so-loi-test-case.md</code>.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 3: Build strict + commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>mkdocs<span class="w"> </span>build<span class="w"> </span>--strict<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-10
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>git<span class="w"> </span>add<span class="w"> </span>docs/assets/broken/giam_khao_hong.py<span class="w"> </span>docs/truc-00-do-luong/00-ca-hong.md
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat(trục00): ca hỏng giám khảo hỏng — position bias (quy tắc 2)&quot;</span>
+</code></pre></div>
+<h3 id="task-9-buoi-01-phan-tich-loi-truoc-khi-nghi-toi-chi-so">Task 9: Buổi 0.1 — Phân tích lỗi trước khi nghĩ tới chỉ số<a class="headerlink" href="#task-9-buoi-01-phan-tich-loi-truoc-khi-nghi-toi-chi-so" title="Permanent link">&para;</a></h3>
+<p><strong>Files:</strong> Create <code>truc-00-do-luong/0.1-phan-tich-loi/</code> (5 file)</p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: <code>bai-giang.md</code></strong> — tiêu đề <code># 0.1 — Phân tích lỗi trước khi nghĩ tới chỉ số</code>; mục tiêu (đọc tay
+  100 lượt tương tác, mã hoá mở → 6–8 nhóm lỗi, xếp theo ảnh hưởng); <code>.predict</code> ("Trước khi xây dashboard, đọc tay
+  100 lượt — dự đoán bạn sẽ tìm được bao nhiêu <em>loại</em> lỗi khác nhau?"); phương pháp mã hoá mở (open coding) trên
+  bảng tính, không công cụ; kết quả bắt buộc = danh sách nhóm lỗi có tần suất; chốt corpus + action layer; link
+  nguồn ngoài (Hamel Husain error analysis). Ít code — chủ yếu quy trình.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 2–5:</strong> <code>instructor-notes.md</code> (nhấn: đừng vội đo, đọc dữ liệu thật trước; nạp câu hỏi vàng "sao không
+  để model tự sinh test?"), <code>bai-tap.md</code> (Core: mã hoá mở 30 lượt của corpus riêng → ≥ 5 nhóm lỗi; Đi sâu: xếp
+  hạng nhóm theo ảnh hưởng × tần suất — "Dự đoán trước"), <code>loi-giai.md</code> (rubric: nhóm lỗi tách bạch, có tần suất),
+  <code>slide-outline.md</code>.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 6: Build strict + commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>mkdocs<span class="w"> </span>build<span class="w"> </span>--strict<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-10
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>git<span class="w"> </span>add<span class="w"> </span>docs/truc-00-do-luong/0.1-phan-tich-loi
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat(trục00): buổi 0.1 phân tích lỗi&quot;</span>
+</code></pre></div>
+<h3 id="task-10-buoi-02-bo-e-vang-va-sau-loai-cau-hoi">Task 10: Buổi 0.2 — Bộ đề vàng và sáu loại câu hỏi<a class="headerlink" href="#task-10-buoi-02-bo-e-vang-va-sau-loai-cau-hoi" title="Permanent link">&para;</a></h3>
+<p><strong>Files:</strong> Create <code>truc-00-do-luong/0.2-bo-de-vang/</code> (5 file)</p>
+<p><strong>Code nguồn (sinh test case — pattern từ generate_test_cases, model <code>claude-sonnet-5</code>):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">anthropic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Anthropic</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="n">client</span> <span class="o">=</span> <span class="n">Anthropic</span><span class="p">()</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;claude-sonnet-5&quot;</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">sinh_cau_hoi</span><span class="p">(</span><span class="n">loai</span><span class="p">,</span> <span class="n">tai_lieu</span><span class="p">,</span> <span class="n">so_luong</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>    <span class="n">prompt</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>        <span class="sa">f</span><span class="s2">&quot;Từ tài liệu sau, sinh </span><span class="si">{</span><span class="n">so_luong</span><span class="si">}</span><span class="s2"> câu hỏi thuộc loại &#39;</span><span class="si">{</span><span class="n">loai</span><span class="si">}</span><span class="s2">&#39;.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>        <span class="sa">f</span><span class="s2">&quot;&lt;tài liệu&gt;</span><span class="si">{</span><span class="n">tai_lieu</span><span class="si">}</span><span class="s2">&lt;/tài liệu&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>        <span class="s2">&quot;Mỗi câu hỏi trong một thẻ &lt;q&gt;&lt;/q&gt;.&quot;</span>
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>    <span class="p">)</span>
+<a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a>    <span class="n">out</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">MODEL_NAME</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a>        <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}])</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+<a id="__codelineno-25-13" name="__codelineno-25-13" href="#__codelineno-25-13"></a>    <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<a id="__codelineno-25-14" name="__codelineno-25-14" href="#__codelineno-25-14"></a>    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;q&gt;(.*?)&lt;/q&gt;&quot;</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+<a id="__codelineno-25-15" name="__codelineno-25-15" href="#__codelineno-25-15"></a>
+<a id="__codelineno-25-16" name="__codelineno-25-16" href="#__codelineno-25-16"></a><span class="n">SAU_LOAI</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dữ kiện&quot;</span><span class="p">,</span> <span class="s2">&quot;thời gian/phiên bản&quot;</span><span class="p">,</span> <span class="s2">&quot;biên&quot;</span><span class="p">,</span> <span class="s2">&quot;ngoài phạm vi&quot;</span><span class="p">,</span> <span class="s2">&quot;đối kháng&quot;</span><span class="p">,</span> <span class="s2">&quot;nhất quán&quot;</span><span class="p">]</span>
+</code></pre></div></p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: <code>bai-giang.md</code></strong> — tiêu đề <code># 0.2 — Bộ đề vàng và sáu loại câu hỏi</code>; mục tiêu (6 loại; vì sao bộ
+  đề toàn câu dữ kiện là vô dụng — nó không bao giờ trượt; tự sinh bằng model dùng ở đâu, hỏng ở đâu, vì sao vẫn
+  cần người duyệt; tách tập giữ riêng); <code>.predict</code> ("Bộ đề 30 câu của bạn có 28 câu dữ kiện. Dự đoán: nó sẽ nói
+  gì sai lệch về hệ thống của bạn?"); giải thích 6 loại kèm ví dụ trên corpus; khối code <code>sinh_cau_hoi</code>;
+  <code>.tool-justify</code> cho "tự sinh bằng model" (thay bằng gì: viết tay; gỡ ra thì chỉ số nào tụt: độ phủ/tốc độ tạo đề);
+  link Colab <code>generate_test_cases</code>.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 2–5:</strong> <code>instructor-notes.md</code>, <code>bai-tap.md</code> (Core: sinh ≥ 3 câu mỗi loại cho corpus riêng, người duyệt;
+  Đi sâu: tách tập giữ riêng 20% — "Dự đoán trước"), <code>loi-giai.md</code>, <code>slide-outline.md</code>.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 6: Build strict + commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>mkdocs<span class="w"> </span>build<span class="w"> </span>--strict<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-10
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>git<span class="w"> </span>add<span class="w"> </span>docs/truc-00-do-luong/0.2-bo-de-vang
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat(trục00): buổi 0.2 bộ đề vàng 6 loại&quot;</span>
+</code></pre></div>
+<h3 id="task-11-buoi-03-bo-cham-va-bai-toan-can-chinh">Task 11: Buổi 0.3 — Bộ chấm và bài toán căn chỉnh<a class="headerlink" href="#task-11-buoi-03-bo-cham-va-bai-toan-can-chinh" title="Permanent link">&para;</a></h3>
+<p><strong>Files:</strong> Create <code>truc-00-do-luong/0.3-giam-khao-can-chinh/</code> (5 file)</p>
+<p><strong>Code nguồn (grader từ building_evals + Cohen κ viết từ đầu, model <code>claude-sonnet-5</code>):</strong> dùng lại <code>grade()</code> và
+<code>cohen_kappa()</code> ở <code>cheat-sheets/eval-harness.md</code> (Task 5, Step 3). Bản sửa của ca hỏng (chạy hai chiều):
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">judge_pair_debiased</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">ans_a</span><span class="p">,</span> <span class="n">ans_b</span><span class="p">):</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>    <span class="c1"># Chạy cả hai chiều rồi tổng hợp — khử position bias</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>    <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>    <span class="n">v1</span> <span class="o">=</span> <span class="n">judge_once</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">ans_a</span><span class="p">,</span> <span class="n">ans_b</span><span class="p">)</span>          <span class="c1"># A ở vị trí đầu</span>
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>    <span class="n">v2</span> <span class="o">=</span> <span class="n">judge_once</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">ans_b</span><span class="p">,</span> <span class="n">ans_a</span><span class="p">)</span>          <span class="c1"># A ở vị trí sau</span>
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>    <span class="c1"># v2 == &quot;B&quot; nghĩa là chọn ans_a (vì ans_a giờ là &quot;B&quot;)</span>
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a>    <span class="n">picks_a</span> <span class="o">=</span> <span class="p">(</span><span class="n">v1</span> <span class="o">==</span> <span class="s2">&quot;A&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">v2</span> <span class="o">==</span> <span class="s2">&quot;B&quot;</span><span class="p">)</span>
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a>    <span class="k">if</span> <span class="n">picks_a</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> <span class="k">return</span> <span class="s2">&quot;A&quot;</span>
+<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a>    <span class="k">if</span> <span class="n">picks_a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="s2">&quot;B&quot;</span>
+<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a>    <span class="k">return</span> <span class="s2">&quot;hoà&quot;</span>   <span class="c1"># bất đồng giữa hai chiều = tín hiệu câu khó/giám khảo yếu</span>
+</code></pre></div></p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: <code>bai-giang.md</code></strong> — tiêu đề <code># 0.3 — Bộ chấm và bài toán căn chỉnh</code>; mục tiêu (nhãn nhị phân vs
+  thang 1–5; model làm giám khảo &amp; các thiên lệch: vị trí, độ dài, tự ưu ái; căn chỉnh với <em>một</em> người chấm chuẩn,
+  đo bằng Cohen κ chứ không "tỉ lệ đồng ý"; vì sao 85% đồng ý có thể tệ hơn tung đồng xu); nối lại ca hỏng Task 8 →
+  đưa bản sửa <code>judge_pair_debiased</code>; khối <code>grade()</code> + <code>cohen_kappa()</code>; <code>.predict</code> ("Giám khảo đồng ý 85% với nhãn
+  người. Dự đoán κ là bao nhiêu nếu 80% mẫu là nhãn 'correct'?"); <code>.tool-justify</code> cho "model làm giám khảo".</p>
+</li>
+<li>
+<p>[ ] <strong>Step 2–5:</strong> <code>instructor-notes.md</code>, <code>bai-tap.md</code> (Core: tính κ giữa giám khảo và nhãn tay trên 50 mẫu;
+  Đi sâu: khử position bias bằng chạy hai chiều, so κ trước/sau — "Dự đoán trước"), <code>loi-giai.md</code> (code κ đầy đủ +
+  rubric), <code>slide-outline.md</code>.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 6: Build strict + commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>mkdocs<span class="w"> </span>build<span class="w"> </span>--strict<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-10
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>git<span class="w"> </span>add<span class="w"> </span>docs/truc-00-do-luong/0.3-giam-khao-can-chinh
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat(trục00): buổi 0.3 giám khảo &amp; căn chỉnh (Cohen κ)&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="phase-e-deploy-kiem-thu-cuoi">PHASE E — Deploy &amp; kiểm thử cuối<a class="headerlink" href="#phase-e-deploy-kiem-thu-cuoi" title="Permanent link">&para;</a></h2>
+<h3 id="task-12-github-actions-kiem-thu-toan-site">Task 12: GitHub Actions + kiểm thử toàn site<a class="headerlink" href="#task-12-github-actions-kiem-thu-toan-site" title="Permanent link">&para;</a></h3>
+<p><strong>Files:</strong> Create <code>$COURSE/.github/workflows/deploy-docs.yml</code></p>
+<ul>
+<li>[ ] <strong>Step 1: <code>deploy-docs.yml</code></strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deploy docs to GitHub Pages</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="nt">on</span><span class="p">:</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">main</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="nt">permissions</span><span class="p">:</span>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="w">  </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span>
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="nt">jobs</span><span class="p">:</span>
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a><span class="w">  </span><span class="nt">deploy</span><span class="p">:</span>
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v5</span>
+<a id="__codelineno-29-13" name="__codelineno-29-13" href="#__codelineno-29-13"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3.12&quot;</span><span class="p p-Indicator">}</span>
+<a id="__codelineno-29-14" name="__codelineno-29-14" href="#__codelineno-29-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install -r requirements.txt</span>
+<a id="__codelineno-29-15" name="__codelineno-29-15" href="#__codelineno-29-15"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mkdocs gh-deploy --force</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Build strict cuối cùng</strong></li>
+</ul>
+<p>Run: <code>source .venv/bin/activate &amp;&amp; mkdocs build --strict 2&gt;&amp;1 | tail -20</code>
+Expected: "Documentation built" không WARNING/ERROR; mọi file trong nav tồn tại.</p>
+<ul>
+<li>
+<p>[ ] <strong>Step 3: Kiểm thử thủ công (serve)</strong> — duyệt: landing → syllabus.html (tiếng Việt đúng, không mojibake,
+  ratchet + predict chạy) → Buổi 0 → Trục 00 (0.1/0.2/0.3, widget predict khoá/mở đúng) → Cổng 00. Không link 404.</p>
+</li>
+<li>
+<p>[ ] <strong>Step 4: Commit + bước thủ công người dùng</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>git<span class="w"> </span>add<span class="w"> </span>.github/workflows/deploy-docs.yml
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;ci: deploy mkdocs lên github pages&quot;</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>git<span class="w"> </span>branch<span class="w"> </span>-M<span class="w"> </span>main
+</code></pre></div>
+<p>Bước thủ công của người dùng (không tự động hoá): tạo repo rỗng <code>claude-cookbooks-course</code> trên GitHub →
+<code>git remote add origin</code> → <code>git push -u origin main</code> (chỉ khi người dùng đồng ý) → Settings → Pages → nhánh
+<code>gh-pages</code> → chờ Action → mở <code>https://mduongvandinh.github.io/claude-cookbooks-course/</code>.</p>
+<hr />
+<h2 id="self-review-oi-chieu-spec-5-truc">Self-Review (đối chiếu spec 5 trục)<a class="headerlink" href="#self-review-oi-chieu-spec-5-truc" title="Permanent link">&para;</a></h2>
+<p><strong>Spec coverage:</strong>
+- §2 repo standalone + UTF-8 → Task 1 (git init, kiểm encoding), Task 12 (push thủ công). ✓
+- §3 bốn quy tắc → ① Task 4 widget + dùng mọi buổi; ② Task 8 ca hỏng; ③ Task 5/7 sổ lỗi + câu hỏi vàng;
+  ④ thẻ biện minh trong Task 6/10/11. ✓
+- §4 on-ramp Buổi 0 → Task 6. Trục 00 (3 buổi) → Task 9/10/11. ✓
+- §5 corpus + action layer → syllabus Task 2 Step 3 + nhắc chốt ở 0.1 (Task 9) và index (Task 7). ✓
+- §6 cổng phân tầng → Task 7 Step 3 (cong-00.md) + syllabus Task 2 Step 4. ✓
+- §7 break-first → Task 8. §8 cut Multimodal → syllabus Task 2 Step 2 + phụ lục Task 5. ✓
+- §9 câu hỏi vàng ratchet → giữ trong syllabus.html + seed truc-00 Task 7. ✓
+- §10 nguồn + license → setup/phụ lục; license note trong spec (không thu phí ở pilot). ✓
+- §12 HTML syllabus + MkDocs → Phase A (HTML) + Phase B–E (MkDocs). ✓
+- §13 lịch 10 tuần → syllabus Task 2 Step 5. ✓
+- §14 định nghĩa đạt → gate <code>mkdocs build --strict</code> mọi task + Task 12 kiểm UTF-8/widget. ✓
+- §15 MVP = on-ramp + Trục 00 → toàn plan đúng phạm vi. ✓</p>
+<p><strong>Placeholder scan:</strong> config/JS/CSS/code eval + code hỏng có nội dung đầy đủ; file teaching đặc tả theo mục bắt buộc
++ code nguồn chính xác. Không "viết nội dung phù hợp" chung chung. ✓</p>
+<p><strong>Type/tên nhất quán:</strong> <code>get_completion</code>, <code>grade</code>, <code>cohen_kappa</code>, <code>judge_once</code>, <code>judge_pair_debiased</code>, <code>MODEL_NAME</code>,
+<code>.predict/.predict-input/.predict-btn/.predict-result</code> dùng nhất quán; đường dẫn thư mục khớp giữa <code>mkdocs.yml</code> nav
+(Task 3) và task tạo file (6–11). ✓</p>
+<p><strong>Ghi chú:</strong> Phần lõi Trục 00 (pairwise judge, position bias, Cohen κ) KHÔNG có trong cookbook — plan viết từ đầu,
+đúng chuẩn, stdlib thuần; cơ chế harness (grader + % score) và sinh đề bám <code>building_evals</code>/<code>generate_test_cases</code>.
+```</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Trở lại mục lục
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "content.tabs.link", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0110\u00e3 sao ch\u00e9p", "clipboard.copy": "Sao ch\u00e9p v\u00e0o b\u1ed9 nh\u1edb t\u1ea1m", "search.result.more.one": "1 t\u1eeb kh\u00e1c trong trang", "search.result.more.other": "# t\u1eeb kh\u00e1c trong trang", "search.result.none": "Kh\u00f4ng t\u00ecm th\u1ea5y t\u00e0i li\u1ec7u li\u00ean quan", "search.result.one": "1 t\u00e0i li\u1ec7u li\u00ean quan", "search.result.other": "# t\u00e0i li\u1ec7u li\u00ean quan", "search.result.placeholder": "Nh\u1eadp \u0111\u1ec3 b\u1eaft \u0111\u1ea7u t\u00ecm ki\u1ebfm", "search.result.term.missing": "Kh\u00f4ng", "select.version": "Ch\u1ecdn phi\u00ean b\u1ea3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/javascripts/predict-reveal.js"></script>
+      
+    
+  </body>
+</html>

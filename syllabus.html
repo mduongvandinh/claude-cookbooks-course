@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Giáo trình 5 trục — Đo lường, Truy hồi, Sinh, Vòng lặp, Vận hành</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400;12..96,75..100,700;12..96,75..100,800&family=Be+Vietnam+Pro:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDF0F4;
+  --paper-2:#F7F9FB;
+  --ink:#16202B;
+  --dim:#5B6B7C;
+  --rail:#C3CCD6;
+  --signal:#0E6E7D;
+  --signal-soft:#DCEBEE;
+  --gate:#A6234A;
+  --gate-soft:#F6E2E8;
+  --measure:70ch;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Be Vietnam Pro","Segoe UI",system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:1.5rem}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-weight:400;font-size:16.5px;line-height:1.66;
+  -webkit-font-smoothing:antialiased;
+  background-image:linear-gradient(var(--rail) 1px,transparent 1px),linear-gradient(90deg,var(--rail) 1px,transparent 1px);
+  background-size:64px 64px;background-position:-1px -1px;
+}
+body::before{content:"";position:fixed;inset:0;background:var(--paper);opacity:.86;pointer-events:none;z-index:0}
+.shell{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 24px 120px;display:grid;grid-template-columns:180px 1fr;gap:48px}
+main{min-width:0;max-width:var(--measure)}
+
+/* ---------- RAIL ---------- */
+.rail{position:sticky;top:0;align-self:start;height:100vh;padding:40px 0;display:flex;flex-direction:column;gap:2px}
+.rail-title{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:18px}
+.rail a{display:flex;gap:10px;align-items:baseline;text-decoration:none;color:var(--dim);font-size:13px;padding:5px 0;border-left:2px solid var(--rail);padding-left:12px;transition:.18s}
+.rail a .rn{font-family:var(--mono);font-size:11px;font-weight:600}
+.rail a:hover{color:var(--ink);border-left-color:var(--signal)}
+.rail a.on{color:var(--ink);border-left-color:var(--signal);font-weight:500}
+.rail-meter{margin-top:auto;border-top:1px solid var(--rail);padding-top:14px;font-family:var(--mono);font-size:11px;color:var(--dim);line-height:1.5}
+.rail-meter b{color:var(--signal);font-size:19px;display:block;font-weight:600}
+
+/* ---------- HERO ---------- */
+.hero{padding:76px 0 30px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gate);margin:0 0 22px}
+h1{font-family:var(--display);font-weight:800;font-stretch:88%;font-size:clamp(2.6rem,6.4vw,4.15rem);line-height:.97;letter-spacing:-.022em;margin:0 0 26px}
+.lede{font-size:1.15rem;color:var(--dim);max-width:56ch;margin:0 0 44px;font-weight:300}
+.lede strong{color:var(--ink);font-weight:500}
+
+.flip{border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);padding:26px 0;margin:0 0 20px}
+.flip-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-family:var(--display);font-stretch:80%;font-weight:700;font-size:clamp(1.05rem,3vw,1.6rem);letter-spacing:-.01em}
+.flip-row+.flip-row{margin-top:16px}
+.flip-tag{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;border-radius:2px}
+.tag-out{background:var(--gate-soft);color:var(--gate)}
+.tag-in{background:var(--signal-soft);color:var(--signal)}
+.strike{text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:var(--gate);color:var(--dim)}
+.arrow{color:var(--rail);font-weight:400}
+.flip-note{font-size:.9rem;color:var(--dim);margin:20px 0 0;max-width:54ch}
+
+/* ---------- TYPO ---------- */
+section{padding:64px 0 8px;scroll-margin-top:24px}
+h2{font-family:var(--display);font-weight:800;font-stretch:85%;font-size:clamp(1.7rem,4vw,2.35rem);line-height:1.06;letter-spacing:-.018em;margin:0 0 8px}
+h3{font-family:var(--display);font-weight:700;font-stretch:90%;font-size:1.2rem;letter-spacing:-.01em;margin:34px 0 10px}
+h4{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin:26px 0 10px}
+p{margin:0 0 15px}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--signal);margin:0 0 12px}
+.sub{color:var(--dim);font-size:1.02rem;margin:0 0 26px;max-width:58ch}
+ul,ol{margin:0 0 16px;padding-left:20px}
+li{margin-bottom:7px}
+li::marker{color:var(--signal)}
+code{font-family:var(--mono);font-size:.86em;background:#fff;border:1px solid var(--rail);padding:1px 5px;border-radius:3px}
+a{color:var(--signal)}
+hr.div{border:0;border-top:1px solid var(--rail);margin:56px 0 0}
+
+/* ---------- CARDS ---------- */
+.card{background:var(--paper-2);border:1px solid var(--rail);border-radius:4px;padding:22px 24px;margin:0 0 14px}
+.card p:last-child,.card ul:last-child{margin-bottom:0}
+.card-h{font-family:var(--display);font-weight:700;font-stretch:90%;font-size:1.02rem;margin:0 0 8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+.principle{display:grid;grid-template-columns:34px 1fr;gap:16px;padding:20px 0;border-top:1px solid var(--rail)}
+.principle:last-of-type{border-bottom:1px solid var(--rail)}
+.principle .pn{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--gate);padding-top:4px}
+.principle h3{margin:0 0 6px;font-size:1.06rem}
+.principle p{margin:0;color:var(--dim);font-size:.95rem}
+
+/* ---------- TABLE ---------- */
+.tbl{width:100%;border-collapse:collapse;font-size:.9rem;margin:0 0 18px}
+.tbl th{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);text-align:left;padding:0 12px 9px 0;border-bottom:1.5px solid var(--ink);font-weight:600}
+.tbl td{padding:11px 12px 11px 0;border-bottom:1px solid var(--rail);vertical-align:top}
+.tbl td:first-child{font-family:var(--mono);font-weight:600;color:var(--signal);white-space:nowrap}
+.tbl .num{font-family:var(--mono);white-space:nowrap;color:var(--dim)}
+
+/* ---------- AXIS ---------- */
+.axis{margin:0 0 10px;padding-top:8px}
+.axis-head{display:flex;align-items:baseline;gap:16px;border-bottom:1.5px solid var(--ink);padding-bottom:12px;margin-bottom:22px}
+.axis-no{font-family:var(--mono);font-size:2.5rem;font-weight:600;line-height:1;color:var(--rail)}
+.axis-name{font-family:var(--display);font-weight:800;font-stretch:85%;font-size:clamp(1.55rem,3.6vw,2.05rem);letter-spacing:-.018em;line-height:1;margin:0}
+.axis-meta{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--dim);text-align:right;line-height:1.4}
+.q-central{font-family:var(--display);font-weight:700;font-stretch:92%;font-size:1.22rem;line-height:1.34;color:var(--gate);margin:0 0 22px;padding-left:16px;border-left:3px solid var(--gate)}
+
+.sess{border-left:2px solid var(--rail);padding:0 0 2px 18px;margin:0 0 4px;position:relative}
+.sess::before{content:"";position:absolute;left:-5px;top:9px;width:8px;height:8px;border-radius:50%;background:var(--signal)}
+.sess-h{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--signal);text-transform:uppercase}
+.sess-t{font-weight:600;margin:1px 0 4px}
+.sess ul{margin:0 0 18px;padding-left:18px;font-size:.94rem;color:var(--dim)}
+.sess ul li{margin-bottom:4px}
+
+/* ---------- BREAK-FIRST ---------- */
+.brk{border:1.5px solid var(--ink);border-radius:4px;background:#fff;margin:24px 0 22px;overflow:hidden}
+.brk-top{background:var(--ink);color:var(--paper);padding:9px 20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brk-top span:last-child{color:var(--rail)}
+.brk-body{padding:20px 22px}
+.brk-setup{margin:0 0 16px}
+.brk-q{font-weight:600;margin:0 0 12px;font-size:.98rem}
+.brk textarea{width:100%;min-height:72px;font-family:var(--body);font-size:.94rem;padding:11px 13px;border:1px solid var(--rail);border-radius:3px;background:var(--paper-2);color:var(--ink);resize:vertical;line-height:1.5}
+.brk textarea:focus{outline:2px solid var(--signal);outline-offset:1px;border-color:transparent}
+.brk-act{display:flex;gap:12px;align-items:center;margin-top:11px;flex-wrap:wrap}
+.btn{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:9px 16px;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);border-radius:3px;cursor:pointer;transition:.15s}
+.btn:hover{background:var(--signal);border-color:var(--signal)}
+.btn:disabled{background:transparent;color:var(--rail);border-color:var(--rail);cursor:not-allowed}
+.btn-hint{font-size:.84rem;color:var(--dim)}
+.reveal{display:none;margin-top:18px;padding-top:18px;border-top:1px dashed var(--rail)}
+.reveal.show{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.reveal h5{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gate);margin:0 0 9px}
+.reveal p:last-child{margin-bottom:0}
+.lesson{background:var(--signal-soft);border-left:3px solid var(--signal);padding:12px 16px;margin-top:14px;font-size:.94rem}
+.lesson b{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;display:block;color:var(--signal);margin-bottom:3px}
+
+/* ---------- CUT LIST ---------- */
+.cut{background:var(--gate-soft);border:1px solid #E7C6CF;border-radius:4px;padding:18px 22px;margin:22px 0}
+.cut h4{color:var(--gate);margin-top:0}
+.cut ul{margin-bottom:0;font-size:.94rem}
+.cut li::marker{color:var(--gate)}
+
+/* ---------- GATE STAMP ---------- */
+.gate{margin:30px 0 12px;border:2.5px double var(--gate);border-radius:3px;background:#fff;position:relative}
+.gate-lbl{position:absolute;top:-11px;left:20px;background:#fff;padding:0 9px;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gate)}
+.gate-in{padding:24px 24px 20px}
+.gate-in p{margin:0 0 10px;font-size:.93rem;font-weight:500}
+.gate-in ul{margin:0;padding-left:18px;font-size:.93rem}
+.gate-in li{margin-bottom:6px}
+.gate-in li::marker{color:var(--gate)}
+.gate-in code{background:var(--gate-soft);border-color:#E7C6CF;font-weight:500}
+
+/* ---------- RATCHET CHECKLIST ---------- */
+.ratchet{border:1.5px solid var(--ink);border-radius:4px;background:#fff;overflow:hidden;margin:22px 0}
+.ratchet-hd{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 20px;background:var(--ink);color:var(--paper);flex-wrap:wrap}
+.ratchet-hd .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.15em;text-transform:uppercase}
+.score{font-family:var(--mono);font-size:1.5rem;font-weight:600;line-height:1}
+.score small{font-size:.8rem;color:var(--rail);font-weight:400}
+.bar{height:3px;background:#2C3B4B}
+.bar-fill{height:100%;width:0;background:var(--signal);transition:width .3s}
+.qgrp{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);padding:16px 20px 6px;border-bottom:1px solid var(--rail)}
+.qrow{display:grid;grid-template-columns:30px 1fr auto;gap:12px;align-items:start;padding:12px 20px;border-bottom:1px solid var(--rail);font-size:.95rem}
+.qrow:last-child{border-bottom:0}
+.qrow .qn{font-family:var(--mono);font-size:11px;color:var(--dim);padding-top:3px}
+.qrow.ok{background:var(--signal-soft)}
+.qrow.gap{background:var(--gate-soft)}
+.qtoggle{display:flex;gap:4px}
+.qtoggle button{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;border:1px solid var(--rail);background:#fff;color:var(--dim);border-radius:3px;cursor:pointer;transition:.15s}
+.qtoggle button:hover{border-color:var(--ink);color:var(--ink)}
+.qrow.ok .qtoggle button.y{background:var(--signal);border-color:var(--signal);color:#fff}
+.qrow.gap .qtoggle button.n{background:var(--gate);border-color:var(--gate);color:#fff}
+.gapbox{border-top:1.5px solid var(--ink);padding:18px 20px;background:var(--paper-2)}
+.gapbox h4{margin:0 0 8px}
+.gaplist{font-size:.92rem;margin:0;padding-left:18px;color:var(--gate)}
+.gaplist:empty::after{content:"Chưa có câu nào bị đánh dấu. Bộ câu hỏi vàng trống — hoặc bạn chưa thử giảng thật.";color:var(--dim);font-style:italic;display:block;margin-left:-18px}
+
+/* ---------- SOURCES ---------- */
+.src{border-top:1px solid var(--rail);padding:15px 0}
+.src-t{font-weight:600;font-size:.97rem;margin:0 0 3px}
+.src-m{font-family:var(--mono);font-size:11px;color:var(--dim);margin:0 0 5px}
+.src-w{font-size:.91rem;color:var(--dim);margin:0}
+.pill{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:2px;background:var(--signal-soft);color:var(--signal);font-weight:600;margin-right:6px}
+.pill.b{background:var(--gate-soft);color:var(--gate)}
+
+footer{border-top:1.5px solid var(--ink);margin-top:70px;padding-top:22px;font-family:var(--mono);font-size:11px;color:var(--dim);line-height:1.7}
+
+@media (max-width:900px){
+  .shell{grid-template-columns:1fr;gap:0;padding:0 20px 80px}
+  .rail{position:static;height:auto;padding:26px 0 0;flex-direction:row;flex-wrap:wrap;gap:6px;border-bottom:1px solid var(--rail);padding-bottom:20px}
+  .rail-title,.rail-meter{display:none}
+  .rail a{border-left:0;border-bottom:2px solid var(--rail);padding:4px 10px 4px 0}
+  .hero{padding:36px 0 20px}
+  .grid2{grid-template-columns:1fr}
+  .axis-meta{margin-left:0;width:100%;text-align:left;order:3}
+  .qrow{grid-template-columns:1fr;gap:8px}
+  .qrow .qn{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<nav class="rail" aria-label="Mục lục">
+  <div class="rail-title">Mục lục</div>
+  <a href="#nguyen-tac"><span class="rn">§</span> Nguyên tắc</a>
+  <a href="#ban-do"><span class="rn">§</span> Bản đồ &amp; corpus</a>
+  <a href="#truc0"><span class="rn">00</span> Đo lường</a>
+  <a href="#truc1"><span class="rn">01</span> Truy hồi</a>
+  <a href="#truc2"><span class="rn">02</span> Sinh</a>
+  <a href="#truc3"><span class="rn">03</span> Vòng lặp</a>
+  <a href="#truc4"><span class="rn">04</span> Vận hành</a>
+  <a href="#cau-hoi-vang"><span class="rn">§</span> Câu hỏi vàng</a>
+  <a href="#cham-hoc-vien"><span class="rn">§</span> Chấm học viên</a>
+  <a href="#nguon"><span class="rn">§</span> Nguồn đã lọc</a>
+  <div class="rail-meter">
+    <b id="railScore">0/30</b>
+    sẵn sàng dạy
+  </div>
+</nav>
+
+<main>
+
+<header class="hero">
+  <p class="eyebrow">Giáo trình · 17 buổi · 10 tuần</p>
+  <h1>Không đo được<br>thì không dạy được</h1>
+  <p class="lede">Một giáo trình đi theo trục <strong>vấn đề</strong>, không theo trục <strong>tài liệu</strong>. Kho notebook chỉ là phụ tùng; thứ quyết định là câu hỏi mà mỗi buổi học phải trả lời, và cái cổng số mà học viên phải vượt qua trước khi được đi tiếp.</p>
+
+  <div class="flip">
+    <div class="flip-row">
+      <span class="flip-tag tag-out">Bỏ</span>
+      <span class="strike">Agent</span><span class="arrow">→</span>
+      <span class="strike">RAG</span><span class="arrow">→</span>
+      <span class="strike">Eval</span>
+    </div>
+    <div class="flip-row">
+      <span class="flip-tag tag-in">Dùng</span>
+      <span>Đo lường</span><span class="arrow">→</span>
+      <span>Truy hồi</span><span class="arrow">→</span>
+      <span>Sinh</span><span class="arrow">→</span>
+      <span>Vòng lặp</span><span class="arrow">→</span>
+      <span>Vận hành</span>
+    </div>
+    <p class="flip-note">Lý do đảo thứ tự: nếu Eval nằm cuối, thì mọi khẳng định trong hai phần trước — "kỹ thuật này tốt hơn kỹ thuật kia" — đều không kiểm chứng được suốt cả khoá. Học viên sẽ học một danh mục thay vì một môn.</p>
+  </div>
+</header>
+
+<!-- ================= NGUYÊN TẮC ================= -->
+<section id="nguyen-tac">
+  <p class="kicker">Cơ chế vận hành</p>
+  <h2>Bốn quy tắc áp cho mọi buổi</h2>
+  <p class="sub">Đây là phần khiến giáo trình này khác một playlist notebook. Nếu bỏ bốn quy tắc này, phần còn lại chỉ là mục lục.</p>
+
+  <div class="principle">
+    <div class="pn">01</div>
+    <div>
+      <h3>Dự đoán trước, chạy sau</h3>
+      <p>Trước mỗi thí nghiệm, học viên viết ra dự đoán của mình và <em>khoá lại</em>. Chỉ khi đã khoá mới được xem kết quả. Người không dự đoán thì không học được gì từ kết quả — họ chỉ xác nhận thứ vừa nhìn thấy. Trang này thực thi đúng quy tắc đó: các ô kết quả bên dưới bị khoá cho tới khi bạn viết dự đoán.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="pn">02</div>
+    <div>
+      <h3>Bắt đầu bằng cái hỏng</h3>
+      <p>Mỗi trục mở màn bằng một pipeline đã hỏng sẵn, không phải một pipeline mẫu chạy đúng. Chữa một hệ thống hỏng dạy được nhiều gấp bội việc gõ lại một hệ thống đúng — và nó tạo ra đúng kỹ năng mà người dạy cần: đoán được học viên sẽ kẹt ở đâu.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="pn">03</div>
+    <div>
+      <h3>Bánh cóc: chỉ quay một chiều</h3>
+      <p>Mọi câu hỏi bạn không trả lời trôi chảy khi thử giảng đều bị đưa vào bộ câu hỏi vàng và ở lại đó cho tới khi có câu trả lời viết ra được. Cùng nguyên tắc áp cho học viên: mọi lỗi từng gặp trở thành một ca kiểm thử vĩnh viễn, không được xoá.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="pn">04</div>
+    <div>
+      <h3>Vấn đề trước, công cụ sau</h3>
+      <p>Không buổi nào được mang tên một sản phẩm. Mỗi khi giới thiệu một công cụ, phải trả lời được ngay: thay bằng gì cũng chạy được, và nếu gỡ nó ra thì chỉ số nào tụt. Công cụ nào không vượt qua bài kiểm tra này thì bị cắt khỏi giáo trình.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ================= BẢN ĐỒ ================= -->
+<section id="ban-do">
+  <p class="kicker">Tổng quan</p>
+  <h2>Bản đồ 5 trục</h2>
+  <p class="sub">Mỗi trục là một câu hỏi chẩn đoán, không phải một chủ đề. Học viên chỉ qua trục sau khi vượt cổng số của trục trước — không có ngoại lệ, kể cả khi lớp bị chậm tiến độ.</p>
+
+  <table class="tbl">
+    <thead><tr><th>Trục</th><th>Câu hỏi trung tâm</th><th class="num">Buổi</th></tr></thead>
+    <tbody>
+      <tr><td>0 · Nền tảng</td><td>Gọi API, prompt, structured output, một vòng tool use (on-ramp cho người mới)</td><td class="num">1</td></tr>
+      <tr><td>00 · Đo lường</td><td>Làm sao biết hệ thống tốt lên hay xấu đi?</td><td class="num">3</td></tr>
+      <tr><td>01 · Truy hồi</td><td>Tại sao nó lấy sai tài liệu?</td><td class="num">4</td></tr>
+      <tr><td>02 · Sinh</td><td>Tại sao nó bịa dù context đã đúng?</td><td class="num">3</td></tr>
+      <tr><td>03 · Vòng lặp</td><td>Khi nào cần agent thay vì pipeline?</td><td class="num">4</td></tr>
+      <tr><td>04 · Vận hành</td><td>Nó hỏng thế nào lúc 2 giờ sáng?</td><td class="num">3</td></tr>
+    </tbody>
+  </table>
+
+  <p class="sub">Buổi 0 là on-ramp cho lớp hỗn hợp trình độ — người mới học cơ chế gọi API, prompt, structured output và một vòng tool use trước khi vào trục 00. Không có cổng, là prerequisite bắt buộc trước tuần 1.</p>
+
+  <h3>Corpus dùng chung cho cả khoá</h3>
+  <p>Một corpus duy nhất, dùng xuyên suốt 17 buổi: <strong>kho tài liệu kỹ thuật của một sản phẩm phần mềm</strong> — tài liệu API, ghi chú phát hành, bảng mã lỗi, tham chiếu cấu hình, hướng dẫn di trú giữa các phiên bản.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-h">Vì sao corpus này</div>
+      <ul>
+        <li><strong>Có phiên bản</strong> — sinh ra ngay lớp lỗi thời gian: hỏi v3, trả lời theo v1.</li>
+        <li><strong>Có mã lỗi và tên hàm</strong> — chứng minh được vì sao embedding thuần thua tìm kiếm từ khoá.</li>
+        <li><strong>Có mâu thuẫn thật</strong> — tài liệu cũ và tài liệu mới nói ngược nhau, không cần dựng giả.</li>
+        <li><strong>Có cấu trúc phân cấp</strong> — mục / tiểu mục / khối mã, đủ để dạy chunking theo cấu trúc.</li>
+        <li><strong>Kiểm chứng được</strong> — đúng sai rõ ràng, không cần chuyên gia ngành để chấm.</li>
+        <li><strong>Có lớp hành động</strong> — kèm vài mock tool/API (tra bản ghi, cập nhật trạng thái, mở ticket) để trục 03 có action surface thật, không chỉ đọc tài liệu.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-h">Một corpus, không phải năm</div>
+      <p>Đổi corpus giữa các trục là cách nhanh nhất để phá huỷ khả năng so sánh. Điểm số ở trục 03 chỉ có nghĩa nếu nó đo trên cùng bộ dữ liệu với trục 00.</p>
+      <p>Học viên tự thu thập corpus của mình ở buổi 0.1 và giữ nguyên nó tới hết khoá. Ai đổi corpus giữa chừng phải chạy lại toàn bộ đường cơ sở.</p>
+    </div>
+  </div>
+
+  <div class="cut">
+    <h4>Cắt khỏi toàn khoá</h4>
+    <ul>
+      <li><strong>Multimodal (vision, đọc chart, PDF)</strong> — cookbook mạnh phần này, nhưng corpus toàn text nên cắt tường minh theo quy tắc ④. Đưa vào phụ lục tuỳ chọn nếu học viên có nhu cầu ảnh/tài liệu quét.</li>
+    </ul>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ================= TRỤC 0 ================= -->
+<section id="truc0" class="axis">
+  <div class="axis-head">
+    <div class="axis-no">00</div>
+    <h2 class="axis-name">Đo lường</h2>
+    <div class="axis-meta">3 buổi<br>Tuần 1–2<br><span style="color:var(--gate)">+ Buổi 0 on-ramp</span></div>
+  </div>
+  <p class="q-central">Làm sao biết hệ thống đang tốt lên hay xấu đi — mà không phải nhìn rồi cảm thấy?</p>
+
+  <p>Trục này đi trước tất cả vì nó là điều kiện cần của bốn trục còn lại. Không có nó, cả khoá học biến thành một chuỗi ý kiến. Đây cũng là trục học viên ghét nhất trong hai buổi đầu và biết ơn nhất ở tuần thứ chín.</p>
+
+  <h4>Nội dung ba buổi</h4>
+  <div class="sess">
+    <div class="sess-h">Buổi 0.1</div>
+    <div class="sess-t">Phân tích lỗi trước khi nghĩ tới chỉ số</div>
+    <ul>
+      <li>Đọc tay 100 lượt tương tác thật. Không công cụ, không dashboard — một bảng tính.</li>
+      <li>Mã hoá mở — gom nhóm: từ 100 lỗi rời rạc rút ra 6–8 nhóm lỗi.</li>
+      <li>Kết quả bắt buộc: một danh sách nhóm lỗi có tần suất, xếp theo mức độ ảnh hưởng.</li>
+      <li>Học viên chốt corpus riêng của mình, dùng suốt khoá.</li>
+    </ul>
+  </div>
+  <div class="sess">
+    <div class="sess-h">Buổi 0.2</div>
+    <div class="sess-t">Bộ đề vàng và sáu loại câu hỏi</div>
+    <ul>
+      <li>Sáu loại: dữ kiện · thời gian/phiên bản · biên · ngoài phạm vi · đối kháng · nhất quán.</li>
+      <li>Vì sao bộ đề toàn câu dữ kiện là bộ đề vô dụng: nó không bao giờ trượt.</li>
+      <li>Tự sinh bằng mô hình: dùng được ở đâu, hỏng ở đâu, và vì sao vẫn phải người duyệt.</li>
+      <li>Tách tập giữ riêng ngay từ đầu, không bao giờ nhìn vào cho tới lúc chấm.</li>
+    </ul>
+  </div>
+  <div class="sess">
+    <div class="sess-h">Buổi 0.3</div>
+    <div class="sess-t">Bộ chấm và bài toán căn chỉnh</div>
+    <ul>
+      <li>Nhãn nhị phân thay vì thang 1–5: vì sao thang liên tục làm hỏng cả bộ chấm lẫn người chấm.</li>
+      <li>Mô hình làm giám khảo: các thiên lệch vị trí, độ dài, tự ưu ái.</li>
+      <li>Căn chỉnh giám khảo với <em>một</em> người chấm chuẩn; đo bằng hệ số Cohen κ, không phải "tỉ lệ đồng ý".</li>
+      <li>Vì sao 85% đồng ý có thể tệ hơn tung đồng xu, tuỳ tỉ lệ nền.</li>
+    </ul>
+  </div>
+
+  <div class="brk" data-brk="b0">
+    <div class="brk-top"><span>Bài phá trước · Trục 00</span><span>Giám khảo hỏng</span></div>
+    <div class="brk-body">
+      <p class="brk-setup">Bạn phát cho lớp một bộ chấm dạng so sánh cặp: đưa hai câu trả lời A và B, giám khảo chọn cái tốt hơn. Trên 200 cặp, A thắng 65%. Học viên kết luận: cấu hình A tốt hơn.</p>
+      <p class="brk-q">Bạn yêu cầu họ chạy lại đúng 200 cặp đó nhưng hoán đổi vị trí A và B. Dự đoán điều gì sẽ xảy ra với tỉ lệ thắng?</p>
+      <textarea placeholder="Viết dự đoán của bạn — dài ít nhất một câu…" aria-label="Dự đoán"></textarea>
+      <div class="brk-act">
+        <button class="btn" disabled>Khoá dự đoán &amp; xem kết quả</button>
+        <span class="btn-hint">Kết quả bị khoá tới khi bạn viết dự đoán.</span>
+      </div>
+      <div class="reveal">
+        <h5>Kết quả điển hình</h5>
+        <p>Tỉ lệ thắng của <em>vị trí thứ nhất</em> gần như không đổi — vẫn quanh 60–65% — dù nội dung đã hoán chỗ hoàn toàn. Cái bạn đo được không phải chất lượng của A, mà là thiên lệch vị trí của giám khảo.</p>
+        <p>Cách sửa: luôn chạy cả hai chiều và lấy trung bình; hoặc chuyển sang chấm nhị phân từng câu một thay vì so cặp.</p>
+        <div class="lesson"><b>Bài học mang đi</b>Trước khi tin bất kỳ con số nào, phải đo chính cái thước. Một giám khảo chưa được kiểm định thì mọi thí nghiệm phía sau đều vô hiệu.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cut">
+    <h4>Cắt khỏi trục này</h4>
+    <ul>
+      <li><strong>Toàn bộ mảng benchmark học thuật</strong> — SWE-bench và các biến thể, bảng xếp hạng, nhiễm dữ liệu. Hấp dẫn nhưng không ai trong lớp sẽ xây benchmark; họ xây eval cho một sản phẩm.</li>
+      <li><strong>Môi trường RL, thiết kế phần thưởng, RLVR</strong> — thuộc về người huấn luyện mô hình, không thuộc về người xây ứng dụng.</li>
+      <li><strong>So sánh nền tảng eval thương mại</strong> — dạy khái niệm bằng một công cụ mã nguồn mở, để học viên tự chọn nền tảng sau.</li>
+    </ul>
+  </div>
+
+  <div class="gate">
+    <span class="gate-lbl">Cổng 00</span>
+    <div class="gate-in">
+      <p><em>Hai ngưỡng: "tối thiểu để đi tiếp" (đủ vượt cổng) và "đạt chuẩn" (mức Vững). Lớp hỗn hợp có buổi remediation nếu chưa đạt tối thiểu.</em></p>
+      <p>Không qua cổng thì không sang trục 01. Ba điều kiện, đều là số:</p>
+      <ul>
+        <li>Bộ đề vàng: tối thiểu <code>≥ 24 câu</code> / đạt chuẩn <code>≥ 30 câu</code>, phủ đủ 6 loại, mỗi loại <code>≥ 3 câu</code>.</li>
+        <li>Giám khảo: tối thiểu <code>Cohen κ ≥ 0.4</code> / đạt chuẩn <code>≥ 0.6</code> so với nhãn người trên <code>50 mẫu</code> giữ riêng.</li>
+        <li>Chạy được một lệnh duy nhất từ dòng lệnh, cho ra một con số, lặp lại hai lần chênh nhau <code>&lt; 2%</code>.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ================= TRỤC 1 ================= -->
+<section id="truc1" class="axis">
+  <div class="axis-head">
+    <div class="axis-no">01</div>
+    <h2 class="axis-name">Truy hồi</h2>
+    <div class="axis-meta">4 buổi<br>Tuần 3–4</div>
+  </div>
+  <p class="q-central">Tại sao nó lấy sai tài liệu — và làm sao biết đó là lỗi truy hồi chứ không phải lỗi sinh?</p>
+
+  <p>Đây là trục dễ dạy sai nhất, vì kho kỹ thuật RAG có tới ba bốn chục món và ai cũng muốn dạy hết. Dạy tám món cho tới nơi, kèm khả năng chẩn đoán nên dùng món nào, có giá trị hơn hẳn việc lướt qua ba mươi lăm món.</p>
+
+  <h4>Tám kỹ thuật được dạy sâu</h4>
+  <table class="tbl">
+    <thead><tr><th>#</th><th>Kỹ thuật</th><th>Chữa đúng lỗi gì</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Chunking theo cấu trúc</td><td>Chunk cắt ngang định nghĩa, khối mã, bảng tham số</td></tr>
+      <tr><td>2</td><td>Tìm kiếm lai (đặc + thưa)</td><td>Mã lỗi, tên hàm, ký hiệu — embedding không bắt được</td></tr>
+      <tr><td>3</td><td>Lọc theo siêu dữ liệu</td><td>Trả lời đúng nội dung nhưng sai phiên bản / sai sản phẩm</td></tr>
+      <tr><td>4</td><td>Viết lại &amp; tách truy vấn</td><td>Câu hỏi nhiều vế, hoặc dùng từ ngữ khác tài liệu</td></tr>
+      <tr><td>5</td><td>Truy hồi giả định (HyDE)</td><td>Truy vấn quá ngắn, quá mơ hồ để khớp trực tiếp</td></tr>
+      <tr><td>6</td><td>Xếp hạng lại</td><td>Lấy đúng trong top-50 nhưng trượt khỏi top-5</td></tr>
+      <tr><td>7</td><td>Bổ sung ngữ cảnh vào chunk</td><td>Chunk đúng nhưng tách khỏi ngữ cảnh thì vô nghĩa</td></tr>
+      <tr><td>8</td><td>Chunk nhỏ, trả về khối lớn</td><td>Khớp cần độ chính xác, trả lời cần độ đầy đủ</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Nội dung bốn buổi</h4>
+  <div class="sess">
+    <div class="sess-h">Buổi 1.1</div>
+    <div class="sess-t">Đường cơ sở và chẩn đoán</div>
+    <ul>
+      <li>Dựng đường cơ sở tệ có chủ ý: chunk cố định 512 ký tự, embedding thuần, không lọc.</li>
+      <li>Đo <code>recall@k</code> ở nhiều k. Đọc đường cong, không đọc một con số.</li>
+      <li>Cây chẩn đoán: tài liệu đúng không có trong index? có trong index nhưng không được lấy? được lấy nhưng xếp hạng thấp?</li>
+    </ul>
+  </div>
+  <div class="sess">
+    <div class="sess-h">Buổi 1.2</div>
+    <div class="sess-t">Chunking và siêu dữ liệu — hai đòn bẩy lớn nhất</div>
+    <ul>
+      <li>Chunking theo cấu trúc tài liệu thay vì theo số ký tự.</li>
+      <li>Vì sao "chunk bao nhiêu token" là câu hỏi sai; câu hỏi đúng là "chunk có tự đủ nghĩa không".</li>
+      <li>Gắn phiên bản, sản phẩm, ngày vào siêu dữ liệu và lọc cứng trước khi xếp hạng.</li>
+    </ul>
+  </div>
+  <div class="sess">
+    <div class="sess-h">Buổi 1.3</div>
+    <div class="sess-t">Lai ghép, viết lại truy vấn, HyDE</div>
+    <ul>
+      <li>Vì sao BM25 vẫn thắng ở lớp truy vấn mã lỗi và tên định danh.</li>
+      <li>Cách hoà điểm hai nguồn và vì sao trọng số phải được đo chứ không được đoán.</li>
+      <li>HyDE: cải thiện ở đâu, làm tệ đi ở đâu (gợi ý: câu hỏi đã rất cụ thể).</li>
+    </ul>
+  </div>
+  <div class="sess">
+    <div class="sess-h">Buổi 1.4</div>
+    <div class="sess-t">Xếp hạng lại và bài toán ngân sách</div>
+    <ul>
+      <li>Chuyển từ độ bao phủ sang độ chính xác bằng mô hình xếp hạng chéo.</li>
+      <li>Đo cả điểm chất lượng lẫn độ trễ trong cùng một lần chạy — đây là buổi đầu tiên hai thứ đó xuất hiện cạnh nhau.</li>
+      <li>Bảng đóng góp: mỗi kỹ thuật thêm bao nhiêu điểm, tốn bao nhiêu mili-giây.</li>
+    </ul>
+  </div>
+
+  <div class="brk" data-brk="b1">
+    <div class="brk-top"><span>Bài phá trước · Trục 01</span><span>Chunk cắt ngang</span></div>
+    <div class="brk-body">
+      <p class="brk-setup">Bạn phát một pipeline có bộ chunk cắt cứng theo số ký tự. Hậu quả: nhiều khối mã và bảng tham số bị cắt làm đôi — nửa đầu chứa tên tham số, nửa sau chứa giá trị mặc định và cảnh báo.</p>
+      <p class="brk-q">Chỉ số nào tụt trước: <code>recall@10</code> hay độ trung thành của câu trả lời? Vì sao?</p>
+      <textarea placeholder="Viết dự đoán của bạn — dài ít nhất một câu…" aria-label="Dự đoán"></textarea>
+      <div class="brk-act">
+        <button class="btn" disabled>Khoá dự đoán &amp; xem kết quả</button>
+        <span class="btn-hint">Kết quả bị khoá tới khi bạn viết dự đoán.</span>
+      </div>
+      <div class="reveal">
+        <h5>Kết quả điển hình</h5>
+        <p><code>recall@10</code> gần như không nhúc nhích. Chunk nửa đầu vẫn chứa tên tham số nên vẫn khớp truy vấn và vẫn được lấy về — theo mọi thước đo truy hồi, hệ thống vẫn "đúng".</p>
+        <p>Cái sụp là độ trung thành: mô hình nhận được nửa định nghĩa, và nó điền nốt nửa còn lại bằng cách bịa. Lớp lỗi nguy hiểm nhất của RAG sinh ra ở đây — sai mà vẫn có trích dẫn.</p>
+        <div class="lesson"><b>Bài học mang đi</b><code>recall@k</code> là chỉ số biết nói dối khi chunk không tự đủ nghĩa. Luôn ghép nó với một chỉ số đo ở đầu ra, không bao giờ dùng một mình.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cut">
+    <h4>Cắt khoảng hai mươi bảy kỹ thuật còn lại — theo bốn lý do</h4>
+    <ul>
+      <li><strong>Trùng ý</strong> — nhiều biến thể chỉ là cùng một ý tưởng đổi tên. Dạy ý tưởng gốc, nhắc tên biến thể trong một câu.</li>
+      <li><strong>Tối ưu thứ không phải nút thắt</strong> — nếu chunking của bạn còn hỏng, mọi kỹ thuật xếp hạng tinh vi đều vô nghĩa. Dạy theo thứ tự đòn bẩy.</li>
+      <li><strong>Đòi hạ tầng lớp chưa có</strong> — truy hồi trên đồ thị tri thức, chỉ mục nhiều tầng: cần dựng và bảo trì hạ tầng riêng, vượt phạm vi một khoá 10 tuần.</li>
+      <li><strong>Chỉ có nghĩa ở quy mô rất lớn</strong> — vài kỹ thuật chỉ trả công khi corpus tính bằng triệu tài liệu. Nêu tên, giải thích ngưỡng, không thực hành.</li>
+    </ul>
+    <p style="margin:12px 0 0;font-size:.92rem">Cách trình bày trên lớp rất quan trọng: đừng nói "phần này không quan trọng". Nói "phần này quan trọng khi bạn ở trong hoàn cảnh X — và đây là cách nhận ra bạn đã ở trong hoàn cảnh đó".</p>
+  </div>
+
+  <div class="gate">
+    <span class="gate-lbl">Cổng 01</span>
+    <div class="gate-in">
+      <p><em>Hai ngưỡng: "tối thiểu để đi tiếp" và "đạt chuẩn" (mức Vững). Lớp hỗn hợp có buổi remediation nếu chưa đạt tối thiểu.</em></p>
+      <p>Điều kiện sang trục 02:</p>
+      <ul>
+        <li><code>recall@10</code> trên bộ đề vàng tăng <code>≥ 15 điểm</code> so với đường cơ sở, có log đo trước và sau.</li>
+        <li>Nộp bảng đóng góp: mỗi kỹ thuật đã bật đóng góp bao nhiêu điểm và tốn bao nhiêu <code>ms</code>.</li>
+        <li>Trả lời được bằng văn bản: kỹ thuật nào đã thử nhưng <em>làm tệ đi</em>, và vì sao.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ================= TRỤC 2 ================= -->
+<section id="truc2" class="axis">
+  <div class="axis-head">
+    <div class="axis-no">02</div>
+    <h2 class="axis-name">Sinh</h2>
+    <div class="axis-meta">3 buổi<br>Tuần 5</div>
+  </div>
+  <p class="q-central">Context đã đúng hoàn toàn. Vì sao nó vẫn bịa — và làm sao dạy nó nói "tôi không biết"?</p>
+
+  <p>Phần lớn khoá học RAG dừng ở truy hồi và coi phần sinh là chuyện của prompt. Đó là lý do sản phẩm của học viên vẫn bịa sau khi ra lớp. Trục này tách lỗi sinh khỏi lỗi truy hồi và xử lý riêng.</p>
+
+  <h4>Nội dung ba buổi</h4>
+  <div class="sess">
+    <div class="sess-h">Buổi 2.1</div>
+    <div class="sess-t">Tách hai loại lỗi</div>
+    <ul>
+      <li>Trung thành với ngữ cảnh so với hữu ích với người hỏi — hai chỉ số khác nhau, có thể ngược chiều nhau.</li>
+      <li>Thí nghiệm cô lập: đưa context hoàn hảo bằng tay, đo tỉ lệ bịa còn lại. Con số đó là trần của phần sinh.</li>
+      <li>Áp trích dẫn ở cấp câu, và cách kiểm tra trích dẫn có thật hay không.</li>
+    </ul>
+  </div>
+  <div class="sess">
+    <div class="sess-h">Buổi 2.2</div>
+    <div class="sess-t">Ngữ cảnh dài, mâu thuẫn, và vị trí</div>
+    <ul>
+      <li>Thông tin ở giữa ngữ cảnh dài bị bỏ sót — đo bằng cách dịch chuyển vị trí chunk đúng.</li>
+      <li>Hai tài liệu nói ngược nhau vì khác phiên bản: mô hình mặc định chọn cái nào?</li>
+      <li>Quy tắc phân xử phải nằm trong prompt và phải kiểm chứng được, không phó mặc.</li>
+      <li>Nhồi thêm chunk không phải lúc nào cũng tốt hơn — tìm điểm gãy bằng thực nghiệm.</li>
+    </ul>
+  </div>
+  <div class="sess">
+    <div class="sess-h">Buổi 2.3</div>
+    <div class="sess-t">Từ chối trả lời — buổi khó nhất</div>
+    <ul>
+      <li>Dạy hệ thống nói "không có trong tài liệu" mà không biến nó thành cỗ máy từ chối mọi thứ.</li>
+      <li>Hai chỉ số phải đi cùng nhau: từ chối đúng và từ chối nhầm. Cải thiện một cái luôn kéo cái kia.</li>
+      <li>Vì sao nhóm câu hỏi ngoài phạm vi trong bộ đề vàng ở buổi 0.2 mới thật sự phát huy tác dụng ở đây.</li>
+    </ul>
+  </div>
+
+  <div class="brk" data-brk="b2">
+    <div class="brk-top"><span>Bài phá trước · Trục 02</span><span>Ngữ cảnh cám dỗ</span></div>
+    <div class="brk-body">
+      <p class="brk-setup">Bạn nạp vào ngữ cảnh bốn chunk: một chunk chứa câu trả lời đúng nhưng viết cụt lủn, khô khan; ba chunk sai — chúng nói về một phiên bản cũ — nhưng viết mạch lạc, dài hơn, có ví dụ đầy đủ. Chunk đúng được đặt ở vị trí thứ ba trong bốn.</p>
+      <p class="brk-q">Mô hình sẽ dựa vào chunk nào? Và nếu bạn chuyển chunk đúng lên vị trí đầu tiên thì thay đổi bao nhiêu?</p>
+      <textarea placeholder="Viết dự đoán của bạn — dài ít nhất một câu…" aria-label="Dự đoán"></textarea>
+      <div class="brk-act">
+        <button class="btn" disabled>Khoá dự đoán &amp; xem kết quả</button>
+        <span class="btn-hint">Kết quả bị khoá tới khi bạn viết dự đoán.</span>
+      </div>
+      <div class="reveal">
+        <h5>Kết quả điển hình</h5>
+        <p>Mô hình nghiêng mạnh về nhóm chunk trôi chảy và dài hơn — độ mạch lạc của văn bản bị nhầm thành độ đáng tin. Câu trả lời sinh ra vẫn có trích dẫn, vẫn trung thành với <em>một</em> nguồn trong ngữ cảnh, và vẫn sai.</p>
+        <p>Dời chunk đúng lên đầu thường cải thiện rõ rệt — đó chính là hiệu ứng vị trí. Hai quan sát này gộp lại cho một kết luận khó chịu: thứ tự chunk là một siêu tham số, và hầu hết mọi người không bao giờ đo nó.</p>
+        <div class="lesson"><b>Bài học mang đi</b>Trung thành với ngữ cảnh không đồng nghĩa với đúng. Nếu ngữ cảnh chứa sẵn thứ sai thì phần sinh chỉ làm cho cái sai trở nên thuyết phục hơn.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gate">
+    <span class="gate-lbl">Cổng 02</span>
+    <div class="gate-in">
+      <p><em>Hai ngưỡng: "tối thiểu để đi tiếp" và "đạt chuẩn" (mức Vững). Lớp hỗn hợp có buổi remediation nếu chưa đạt tối thiểu.</em></p>
+      <p>Điều kiện sang trục 03:</p>
+      <ul>
+        <li>Độ trung thành <code>≥ 0.90</code> trên tập giữ riêng, đo bằng giám khảo đã căn chỉnh ở cổng 00.</li>
+        <li>Từ chối đúng <code>≥ 80%</code> trên nhóm câu ngoài phạm vi, đồng thời từ chối nhầm <code>≤ 5%</code> trên nhóm trong phạm vi.</li>
+        <li>Nộp một trường hợp mà hệ thống <em>vẫn</em> sai, kèm giải thích nguyên nhân gốc.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ================= TRỤC 3 ================= -->
+<section id="truc3" class="axis">
+  <div class="axis-head">
+    <div class="axis-no">03</div>
+    <h2 class="axis-name">Vòng lặp</h2>
+    <div class="axis-meta">4 buổi<br>Tuần 6–7</div>
+  </div>
+  <p class="q-central">Khi nào cần agent thay vì một pipeline tất định — và làm sao chứng minh chứ không phải cảm thấy?</p>
+
+  <p>Buổi đầu tiên của trục này dạy khi nào <em>không</em> nên dùng agent. Đây không phải là khiêm tốn giả tạo: pipeline tất định rẻ hơn, dễ gỡ lỗi hơn và đúng hơn trong phần lớn ca sử dụng, và học viên cần biết cách nhận ra ca của mình thuộc loại nào trước khi học cách dựng vòng lặp.</p>
+
+  <h4>Nội dung bốn buổi</h4>
+  <div class="sess">
+    <div class="sess-h">Buổi 3.1</div>
+    <div class="sess-t">Khi nào không cần agent</div>
+    <ul>
+      <li>Ba dấu hiệu thật sự cần vòng lặp: số bước không biết trước, bước sau phụ thuộc kết quả bước trước, và có tín hiệu để tự sửa.</li>
+      <li>Dựng cả hai bản — pipeline tất định và agent — trên cùng một tác vụ, rồi đo.</li>
+      <li>Chi phí ẩn của agent: độ trễ nhân lên, chi phí nhân lên, mặt phẳng lỗi rộng ra.</li>
+    </ul>
+  </div>
+  <div class="sess">
+    <div class="sess-h">Buổi 3.2</div>
+    <div class="sess-t">Thiết kế công cụ là thiết kế agent</div>
+    <ul>
+      <li>Mô tả công cụ mơ hồ sinh ra agent ngu — chứng minh bằng thực nghiệm, không bằng lời khuyên.</li>
+      <li>Đo độ chính xác chọn công cụ như một chỉ số riêng, tách khỏi chất lượng đầu ra.</li>
+      <li>Ranh giới công cụ: một công cụ làm một việc, và trả về thứ mô hình đọc được.</li>
+    </ul>
+  </div>
+  <div class="sess">
+    <div class="sess-h">Buổi 3.3</div>
+    <div class="sess-t">Trạng thái và trí nhớ</div>
+    <ul>
+      <li>Ba tầng khác nhau thường bị gộp làm một: sổ nháp trong lượt, trạng thái phiên, trí nhớ dài hạn.</li>
+      <li>Vì sao đa số hệ thống không cần tầng thứ ba, và làm sao chứng minh mình cần nó.</li>
+      <li>Trí nhớ sai còn tệ hơn không có trí nhớ: lỗi được lưu lại và tái sử dụng.</li>
+    </ul>
+  </div>
+  <div class="sess">
+    <div class="sess-h">Buổi 3.4</div>
+    <div class="sess-t">Chấm agent</div>
+    <ul>
+      <li>Chấm kết quả cuối hay chấm cả đường đi — và khi nào kết quả đúng vẫn phải đánh trượt.</li>
+      <li><code>pass@k</code> đo khả năng, <code>pass^k</code> đo độ tin cậy. Sản phẩm cần cái thứ hai.</li>
+      <li>Định vị lỗi trong một vệt chạy dài: dùng khung phân loại thay vì đọc mò.</li>
+      <li>Cùng mô hình, khác khung chạy, thứ hạng đảo ngược — hệ quả cho mọi bảng xếp hạng bạn đọc.</li>
+    </ul>
+  </div>
+
+  <div class="brk" data-brk="b3">
+    <div class="brk-top"><span>Bài phá trước · Trục 03</span><span>Công cụ mô tả tồi</span></div>
+    <div class="brk-body">
+      <p class="brk-setup">Agent có ba công cụ, mô tả lần lượt là <code>search</code>, <code>lookup</code>, <code>find</code>. Độ chính xác chọn công cụ đo được là 0.55. Học viên đề nghị đổi sang mô hình mạnh hơn và đắt hơn.</p>
+      <p class="brk-q">Đổi mô hình sẽ cải thiện được bao nhiêu, so với việc chỉ viết lại ba dòng mô tả công cụ?</p>
+      <textarea placeholder="Viết dự đoán của bạn — dài ít nhất một câu…" aria-label="Dự đoán"></textarea>
+      <div class="brk-act">
+        <button class="btn" disabled>Khoá dự đoán &amp; xem kết quả</button>
+        <span class="btn-hint">Kết quả bị khoá tới khi bạn viết dự đoán.</span>
+      </div>
+      <div class="reveal">
+        <h5>Kết quả điển hình</h5>
+        <p>Đổi mô hình thường nhích được vài điểm. Viết lại mô tả công cụ — nêu rõ công cụ đó tìm gì, trong phạm vi nào, trả về gì, và khi nào <em>không</em> nên dùng nó — thường nhảy vọt hơn hẳn, với chi phí bằng không.</p>
+        <p>Đây là bài học đắt nhất của trục 03: phần lớn cái mà nhóm phát triển gọi là "mô hình chưa đủ giỏi" thật ra là khung chạy chưa đủ tốt.</p>
+        <div class="lesson"><b>Bài học mang đi</b>Trước khi nâng cấp mô hình, hãy chứng minh rằng khung chạy đã hết dư địa. Gần như chưa bao giờ hết.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cut">
+    <h4>Cắt khỏi trục này</h4>
+    <ul>
+      <li><strong>Hầu hết tutorial gắn với một nhà cung cấp cụ thể</strong> — chúng dạy sản phẩm chứ không dạy nguyên lý. Giữ lại tối đa sáu tutorial nền tảng, phần còn lại chuyển thành demo tuỳ chọn ngoài giờ.</li>
+      <li><strong>Giao thức đa agent và điều phối nhiều tầng</strong> — chuyển sang buổi mở rộng. Lớp chưa vượt được một agent thì chưa nên chạm vào năm agent.</li>
+      <li><strong>Tinh chỉnh mô hình</strong> — một buổi giới thiệu là đủ để biết khi nào nó là câu trả lời đúng; thực hành thì thuộc khoá khác.</li>
+    </ul>
+  </div>
+
+  <div class="gate">
+    <span class="gate-lbl">Cổng 03</span>
+    <div class="gate-in">
+      <p><em>Hai ngưỡng: "tối thiểu để đi tiếp" và "đạt chuẩn" (mức Vững). Lớp hỗn hợp có buổi remediation nếu chưa đạt tối thiểu.</em></p>
+      <p>Điều kiện sang trục 04:</p>
+      <ul>
+        <li>Chứng minh bằng số rằng agent <em>thắng</em> pipeline tất định trên ít nhất một nhóm tác vụ — hoặc chứng minh nó thua và giải thích vì sao.</li>
+        <li>Độ chính xác chọn công cụ <code>≥ 0.90</code>.</li>
+        <li>Báo cáo <code>pass^3</code>, không chỉ <code>pass@3</code>. Nêu rõ khoảng cách giữa hai con số nói lên điều gì.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ================= TRỤC 4 ================= -->
+<section id="truc4" class="axis">
+  <div class="axis-head">
+    <div class="axis-no">04</div>
+    <h2 class="axis-name">Vận hành</h2>
+    <div class="axis-meta">3 buổi<br>Tuần 8–9</div>
+  </div>
+  <p class="q-central">Nó hỏng thế nào lúc 2 giờ sáng, và bạn biết được sau bao lâu?</p>
+
+  <p>Đây là trục không có kho notebook nào dạy, và cũng là trục phân biệt người xây demo với người xây sản phẩm. Toàn bộ nội dung phải tự soạn — bù lại, nó là phần khiến khoá học của bạn không thể thay thế bằng một danh sách liên kết.</p>
+
+  <h4>Nội dung ba buổi</h4>
+  <div class="sess">
+    <div class="sess-h">Buổi 4.1</div>
+    <div class="sess-t">Nhìn thấy được thì mới sửa được</div>
+    <ul>
+      <li>Vệt chạy có cấu trúc theo chuẩn mở: ghi gì ở mỗi bước, và ghi gì thì thừa.</li>
+      <li>Từ một khiếu nại của người dùng lần ngược về đúng lượt gọi — bài tập bấm giờ.</li>
+      <li>Ba mặt có thể chấm: đầu ra, đường đi, trạng thái cuối. Ghi log để chấm được cả ba.</li>
+    </ul>
+  </div>
+  <div class="sess">
+    <div class="sess-h">Buổi 4.2</div>
+    <div class="sess-t">Độ trễ và chi phí là chỉ số hạng nhất</div>
+    <ul>
+      <li>Ngân sách độ trễ: đọc <code>p50 / p95 / p99</code>, và vì sao trung bình là con số vô dụng.</li>
+      <li>Thời gian tới token đầu tiên khác thời gian hoàn tất — người dùng cảm nhận cái nào.</li>
+      <li>Chi phí mỗi truy vấn, tính đủ cả nhúng, xếp hạng lại, và các lượt gọi lặp của agent.</li>
+      <li>Bộ nhớ đệm và bài toán vô hiệu hoá: khi nào một lần trúng đệm là một sai lầm nguy hiểm.</li>
+    </ul>
+  </div>
+  <div class="sess">
+    <div class="sess-h">Buổi 4.3</div>
+    <div class="sess-t">Bảo mật và chống thoái lui</div>
+    <ul>
+      <li>Bộ ba chết người: dữ liệu riêng tư, nội dung không đáng tin, và kênh gửi ra ngoài. Hệ của bạn có mấy phần trong ba?</li>
+      <li>Tiêm lệnh gián tiếp qua chính tài liệu trong corpus — dựng thử một tài liệu độc và xem chuyện gì xảy ra.</li>
+      <li>Quyền của công cụ: ranh giới đọc và ghi, và điểm chèn người duyệt.</li>
+      <li>Chốt khoá: eval chạy tự động trên mọi thay đổi và <em>chặn</em> khi điểm tụt.</li>
+    </ul>
+  </div>
+
+  <div class="brk" data-brk="b4">
+    <div class="brk-top"><span>Bài phá trước · Trục 04</span><span>Đánh đổi</span></div>
+    <div class="brk-body">
+      <p class="brk-setup">Bật xếp hạng lại: điểm chất lượng tăng 6 điểm trên bộ đề vàng. Cùng lúc, <code>p99</code> tăng gấp bốn và chi phí mỗi truy vấn tăng khoảng 40%.</p>
+      <p class="brk-q">Giữ hay bỏ? Và bạn cần thêm những số liệu nào mới quyết được?</p>
+      <textarea placeholder="Viết dự đoán của bạn — dài ít nhất một câu…" aria-label="Dự đoán"></textarea>
+      <div class="brk-act">
+        <button class="btn" disabled>Khoá dự đoán &amp; xem kết quả</button>
+        <span class="btn-hint">Kết quả bị khoá tới khi bạn viết dự đoán.</span>
+      </div>
+      <div class="reveal">
+        <h5>Vì sao đây là câu hỏi bẫy</h5>
+        <p>Không có đáp án đúng nếu chỉ nhìn hai con số. Câu trả lời tốt phải hỏi ngược lại: ngưỡng độ trễ mà người dùng bỏ đi là bao nhiêu? 6 điểm đó rơi vào nhóm truy vấn nào — nhóm chiếm 2% lưu lượng hay 40%? Có bật xếp hạng lại theo điều kiện được không, chỉ khi điểm truy hồi thấp?</p>
+        <p>Học viên nào trả lời ngay "giữ" hoặc "bỏ" là học viên chưa qua trục này. Kỹ năng cần dạy là nhận ra dữ liệu còn thiếu, chứ không phải chọn nhanh.</p>
+        <div class="lesson"><b>Bài học mang đi</b>Mọi quyết định vận hành đều là bài toán ba chiều: chất lượng, độ trễ, chi phí. Ai chỉ báo cáo một chiều là đang giấu hai chiều còn lại.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gate">
+    <span class="gate-lbl">Cổng 04 · Tốt nghiệp</span>
+    <div class="gate-in">
+      <p><em>Hai ngưỡng: "tối thiểu để đi tiếp" và "đạt chuẩn" (mức Vững). Lớp hỗn hợp có buổi remediation nếu chưa đạt tối thiểu.</em></p>
+      <p>Điều kiện hoàn thành khoá:</p>
+      <ul>
+        <li>Mỗi truy vấn sinh ra một vệt chạy đầy đủ, lần ngược được từ khiếu nại về lượt gọi trong <code>&lt; 2 phút</code>.</li>
+        <li>Nêu được <code>p50 / p95 / p99</code> và chi phí mỗi truy vấn của hệ thống mình, không cần tra cứu.</li>
+        <li>Eval chạy tự động trên mọi thay đổi và chặn khi điểm tụt quá ngưỡng đã công bố.</li>
+        <li>Nộp một tài liệu sự cố: một lần hệ thống hỏng, cách phát hiện, cách khắc phục, và ca kiểm thử đã thêm vào bộ đề vàng để nó không tái diễn.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ================= CÂU HỎI VÀNG ================= -->
+<section id="cau-hoi-vang">
+  <p class="kicker">Bánh cóc dành cho người dạy</p>
+  <h2>Ba mươi câu hỏi phải trả lời trôi chảy</h2>
+  <p class="sub">Đây không phải bài kiểm tra kiến thức. Đây là danh sách những câu học viên thật sự sẽ hỏi — thường là ngay giữa buổi, khi bạn đang gõ code trên máy chiếu. Đánh dấu trung thực. Mọi câu bị đánh dấu "chưa vững" sẽ rơi xuống bộ câu hỏi vàng ở cuối và ở lại đó tới khi bạn viết được câu trả lời.</p>
+
+  <div class="ratchet">
+    <div class="ratchet-hd">
+      <div>
+        <div class="lab">Sẵn sàng dạy</div>
+        <div class="score"><span id="okCount">0</span><small>/30</small></div>
+      </div>
+      <div class="lab" id="statusMsg">Chưa bắt đầu</div>
+    </div>
+    <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+    <div id="qlist"></div>
+    <div class="gapbox">
+      <h4>Bộ câu hỏi vàng của bạn</h4>
+      <ol class="gaplist" id="gapList"></ol>
+    </div>
+  </div>
+  <p style="font-size:.9rem;color:var(--dim)">Ngưỡng đề nghị: đạt <strong>28/30</strong> trước buổi dạy chính thức đầu tiên. Hai câu còn lại nên được nói thẳng trên lớp là "tôi chưa chắc, để tôi tra rồi trả lời buổi sau" — và phải trả lời thật ở buổi sau. Nhận không biết một cách cụ thể có sức nặng hơn một câu trả lời trơn tru mà rỗng.</p>
+</section>
+
+<hr class="div">
+
+<!-- ================= CHẤM HỌC VIÊN ================= -->
+<section id="cham-hoc-vien">
+  <p class="kicker">Đánh giá</p>
+  <h2>Chấm học viên bằng gì</h2>
+  <p class="sub">Không chấm bằng bài nộp cuối khoá. Chấm bằng cổng — vượt cổng nào thì đạt tới đó, và cổng đo bằng số nên không cãi nhau được.</p>
+
+  <table class="tbl">
+    <thead><tr><th>Mức</th><th>Nghĩa là</th><th class="num">Điều kiện</th></tr></thead>
+    <tbody>
+      <tr><td>Đạt</td><td>Vượt cả năm cổng bằng số đo trên corpus của chính mình</td><td class="num">5/5 cổng</td></tr>
+      <tr><td>Vững</td><td>Vượt năm cổng, cộng thêm giải thích được vì sao mỗi kỹ thuật hiệu quả và khi nào nó phản tác dụng</td><td class="num">5/5 + vấn đáp</td></tr>
+      <tr><td>Dạy được</td><td>Vững, cộng thêm chữa được pipeline hỏng của người khác trong 30 phút, không dùng notebook mẫu</td><td class="num">+ bài chữa lỗi</td></tr>
+    </tbody>
+  </table>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-h">Bài thi cuối: đổi máy</div>
+      <p>Hai học viên đổi repo cho nhau. Mỗi người có 30 phút để tìm và mô tả ba điểm yếu lớn nhất trong hệ thống của người kia, có kèm số đo chứng minh.</p>
+      <p>Bài này đo đúng thứ mà cả khoá hướng tới: khả năng chẩn đoán một hệ thống mình chưa từng thấy.</p>
+    </div>
+    <div class="card">
+      <div class="card-h">Cái không chấm</div>
+      <p>Không chấm số kỹ thuật đã dùng. Một học viên chỉ dùng ba kỹ thuật nhưng đo được đóng góp của từng cái, đứng trên một học viên bật cả tám mà không biết cái nào có tác dụng.</p>
+      <p>Nói rõ điều này ở buổi 0.1, nếu không cả lớp sẽ chạy đua nhồi kỹ thuật.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ================= NGUỒN ================= -->
+<section id="nguon">
+  <p class="kicker">Nguyên liệu</p>
+  <h2>Ba kho, đã lọc</h2>
+  <p class="sub">Ba nguồn gốc không cùng loại vật liệu, nên được xử lý khác nhau: một kho làm bài thực hành, một kho làm phụ tùng, một kho làm tài liệu đọc.</p>
+
+  <div class="src">
+    <p class="src-t"><span class="pill">Bài thực hành</span> Kho kỹ thuật RAG</p>
+    <p class="src-m">giữ 8 / khoảng 35 · dùng cho trục 01 và 02</p>
+    <p class="src-w">Notebook chạy được, có tiến trình — vật liệu tốt nhất trong ba kho. Lấy tám kỹ thuật ở bảng trục 01, viết lại phần dẫn nhập theo hướng chẩn đoán, và thêm phiên bản hỏng của mỗi notebook để làm bài phá trước.</p>
+  </div>
+
+  <div class="src">
+    <p class="src-t"><span class="pill">Phụ tùng</span> Kho tutorial agent lên sản phẩm</p>
+    <p class="src-m">giữ khoảng 6 / 28 · dùng cho trục 03 và 04</p>
+    <p class="src-w">Phần lớn tutorial ở đây do nhà cung cấp đóng góp, nên chúng dạy sản phẩm chứ không dạy nguyên lý. Giữ nhóm nền tảng: luồng có trạng thái, giao thức gọi công cụ, đóng gói và triển khai, vệt chạy, bảo mật. Mỗi lần dùng một tutorial, thêm một slide trả lời "thay công cụ này bằng gì cũng được". <strong>Kiểm tra giấy phép trước khi đưa vào nội dung có thu phí</strong> — kho này dùng giấy phép phi thương mại tuỳ chỉnh.</p>
+  </div>
+
+  <div class="src">
+    <p class="src-t"><span class="pill b">Tài liệu đọc</span> Thư viện nguồn về eval</p>
+    <p class="src-m">giữ khoảng 26 / hơn 440 liên kết · dùng cho trục 00, 03, 04</p>
+    <p class="src-w">Không phải giáo trình — là thư viện đọc, và phần lớn nghiêng về benchmark cùng môi trường huấn luyện. Rút ra ba nhánh dùng được và bỏ phần còn lại.</p>
+  </div>
+
+  <h3>Ba nhánh cần rút ra từ thư viện eval</h3>
+  <div class="card">
+    <div class="card-h">Nhánh A · Phân tích lỗi và giám khảo <span style="font-family:var(--mono);font-size:11px;color:var(--dim);font-weight:400">— 14 nguồn</span></div>
+    <p>Nhóm bài của Hamel Husain, Shreya Shankar và Eugene Yan về phân tích lỗi, xây giám khảo, căn chỉnh với người chấm, và các thiên lệch của giám khảo. Cộng thêm mục về hệ số Cohen κ và bài về sai số chuẩn trong eval. Đây là xương sống của trục 00 — nếu chỉ đọc được một nhánh thì đọc nhánh này.</p>
+  </div>
+  <div class="card">
+    <div class="card-h">Nhánh B · Eval cho agent và quan sát <span style="font-family:var(--mono);font-size:11px;color:var(--dim);font-weight:400">— 8 nguồn</span></div>
+    <p>Bài về hạ tầng eval cho agent và về vai trò của khung chạy; tài liệu chuẩn ngữ nghĩa mở cho vệt chạy; khung phân loại lỗi hệ đa agent; bài về <code>pass@k</code> và <code>pass^k</code>; và tài liệu chính thức về cách chấm agent theo trạng thái cuối. Dùng cho buổi 3.4 và 4.1.</p>
+  </div>
+  <div class="card">
+    <div class="card-h">Nhánh C · Bảo mật và công cụ <span style="font-family:var(--mono);font-size:11px;color:var(--dim);font-weight:400">— 4 nguồn + bộ công cụ</span></div>
+    <p>Khái niệm bộ ba chết người; một benchmark tiêm lệnh cho agent dùng công cụ; danh sách rủi ro tiêu chuẩn của ngành. Về công cụ: chọn <em>một</em> bộ chạy eval và <em>một</em> nền quan sát mã nguồn mở, dạy suốt khoá, không so sánh nền tảng trên lớp. Tài liệu mẫu code của thư viện đó là chỗ lấy ví dụ chạy được.</p>
+  </div>
+
+  <div class="cut">
+    <h4>Bỏ hẳn khỏi giáo trình</h4>
+    <ul>
+      <li>Toàn bộ nhánh môi trường học tăng cường, thiết kế phần thưởng, phần thưởng kiểm chứng được — thuộc về người huấn luyện mô hình.</li>
+      <li>Toàn bộ họ benchmark kỹ thuật phần mềm và các biến thể — thú vị, không dùng được cho người xây ứng dụng.</li>
+      <li>Tranh luận về tính toàn vẹn của bảng xếp hạng — giữ đúng <em>một</em> ý: cùng mô hình khác khung chạy thì thứ hạng đảo. Ý đó đã nằm ở buổi 3.4.</li>
+      <li>Phần thị trường và bối cảnh công ty — không phục vụ mục tiêu học tập nào.</li>
+    </ul>
+  </div>
+</section>
+
+<hr class="div">
+
+<section>
+  <p class="kicker">Lịch chạy</p>
+  <h2>Mười tuần, hai buổi mỗi tuần</h2>
+  <table class="tbl">
+    <thead><tr><th>Tuần</th><th>Buổi</th><th class="num">Cổng</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Buổi 0 On-ramp · 0.1 Phân tích lỗi</td><td class="num">—</td></tr>
+      <tr><td>2</td><td>0.2 Bộ đề vàng · 0.3 Giám khảo</td><td class="num">Cổng 00</td></tr>
+      <tr><td>3</td><td>1.1 Đường cơ sở · 1.2 Chunking</td><td class="num">—</td></tr>
+      <tr><td>4</td><td>1.3 Lai ghép · 1.4 Xếp hạng lại</td><td class="num">Cổng 01</td></tr>
+      <tr><td>5</td><td>2.1 Tách lỗi · 2.2 Ngữ cảnh dài</td><td class="num">—</td></tr>
+      <tr><td>6</td><td>2.3 Từ chối · 3.1 Khi nào không cần agent</td><td class="num">Cổng 02</td></tr>
+      <tr><td>7</td><td>3.2 Công cụ · 3.3 Trạng thái</td><td class="num">—</td></tr>
+      <tr><td>8</td><td>3.4 Chấm agent · 4.1 Vệt chạy</td><td class="num">Cổng 03</td></tr>
+      <tr><td>9</td><td>4.2 Độ trễ &amp; chi phí · 4.3 Bảo mật</td><td class="num">—</td></tr>
+      <tr><td>10</td><td>Đổi máy · Chấm Cổng 04</td><td class="num">Cổng 04</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.93rem;color:var(--dim)">Tuần 2 và tuần 6 có buổi đệm vì hai cổng đầu là nơi lớp tắc nhiều nhất. Nếu phải cắt, cắt trục 03 xuống ba buổi — đừng bao giờ cắt trục 00.</p>
+</section>
+
+<footer>
+  Giáo trình 5 trục · 17 buổi · 10 tuần · 5 cổng · 30 câu hỏi vàng<br>
+  Các con số trong bài phá trước là kết quả điển hình để đối chiếu, không phải hằng số — mỗi lớp phải tự đo lại trên corpus của mình.<br>
+  Trạng thái đánh dấu chỉ tồn tại trong phiên làm việc này.
+</footer>
+
+</main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Predict before reveal ---------- */
+  document.querySelectorAll('.brk').forEach(function(box){
+    var ta = box.querySelector('textarea');
+    var btn = box.querySelector('.btn');
+    var hint = box.querySelector('.btn-hint');
+    var rev = box.querySelector('.reveal');
+    var MIN = 25;
+    ta.addEventListener('input', function(){
+      var ok = ta.value.trim().length >= MIN;
+      btn.disabled = !ok;
+      if(!rev.classList.contains('show')){
+        hint.textContent = ok ? 'Sẵn sàng. Dự đoán sẽ được khoá lại.'
+                              : 'Kết quả bị khoá tới khi bạn viết dự đoán.';
+      }
+    });
+    btn.addEventListener('click', function(){
+      rev.classList.add('show');
+      btn.disabled = true;
+      btn.textContent = 'Đã khoá';
+      ta.readOnly = true;
+      hint.textContent = 'Dự đoán đã khoá — đối chiếu bên dưới.';
+      rev.scrollIntoView({block:'nearest'});
+    });
+  });
+
+  /* ---------- Golden question set ---------- */
+  var QUESTIONS = [
+    ['Trục 00 · Đo lường', [
+      'Giám khảo của bạn đồng ý 85% với nhãn người. Đủ chưa?',
+      'Vì sao nhãn nhị phân tốt hơn thang 1–5 cho mô hình làm giám khảo?',
+      'Học viên hỏi: sao không để mô hình tự sinh 1000 câu test cho nhanh?',
+      'Bộ đề 30 câu của bạn có 28 câu dữ kiện. Vấn đề nằm ở đâu?',
+      'Điểm eval tăng 4% sau một thay đổi. Làm sao biết đó không phải nhiễu?',
+      'Vì sao không thể viết xong tiêu chí chấm trước khi bắt đầu chấm?'
+    ]],
+    ['Trục 01 · Truy hồi', [
+      'Vì sao chunk 512 token? Câu trả lời không được phép là "vì mặc định".',
+      'recall@10 tăng 12 điểm nhưng chất lượng trả lời không đổi. Ba giải thích khả dĩ?',
+      'Khi nào embedding thuần thua tìm kiếm từ khoá? Cho ví dụ trong corpus tài liệu kỹ thuật.',
+      'HyDE làm hệ thống tệ đi trong trường hợp nào?',
+      'Xếp hạng lại có cứu được chunking tồi không? Vì sao?',
+      'Người dùng hỏi v3, hệ thống trả lời theo v1. Lỗi truy hồi hay lỗi sinh? Phân biệt bằng cách nào?',
+      'Vì sao không bỏ hẳn RAG và nhét toàn bộ tài liệu vào ngữ cảnh dài?'
+    ]],
+    ['Trục 02 · Sinh', [
+      'Ngữ cảnh đúng 100% nhưng mô hình vẫn bịa. Ba nguyên nhân?',
+      'Trung thành và hữu ích khác nhau chỗ nào? Một câu trả lời có thể trung thành mà vô dụng không?',
+      'Làm sao dạy hệ thống nói "không biết" mà không biến nó thành cỗ máy từ chối?',
+      'Hai tài liệu trong ngữ cảnh mâu thuẫn nhau. Mô hình nên làm gì, và bạn ép nó bằng cách nào?',
+      'Thông tin nằm giữa ngữ cảnh dài bị bỏ sót — đo hiện tượng này thế nào?'
+    ]],
+    ['Trục 03 · Vòng lặp', [
+      'Khi nào KHÔNG nên dùng agent? Cho ba dấu hiệu.',
+      'pass@k khác pass^k thế nào? Bài toán nào cần cái nào?',
+      'Agent chọn sai công cụ. Lỗi ở mô hình hay ở mô tả công cụ? Chứng minh ra sao?',
+      'Chấm đường đi hay chấm kết quả? Khi nào kết quả đúng vẫn phải đánh trượt?',
+      'Hệ đa agent hỏng. Bạn dùng khung phân loại nào để định vị lỗi?',
+      'Agent "cần trí nhớ dài hạn" — làm sao chứng minh nó thật sự cần?',
+      'Cùng mô hình, khác khung chạy, thứ hạng đảo ngược. Điều đó nói gì về mọi bảng xếp hạng?'
+    ]],
+    ['Trục 04 · Vận hành', [
+      'Xếp hạng lại làm p99 tăng gấp bốn. Giữ hay bỏ? Cần thêm số liệu gì?',
+      'Bộ ba chết người gồm những gì, và hệ của bạn có đủ ba chưa?',
+      'Bộ nhớ đệm ngữ nghĩa: khi nào một lần trúng đệm là sai lầm nguy hiểm?',
+      'Chi phí mỗi truy vấn của bạn là bao nhiêu? Nếu chưa trả lời được ngay thì đang thiếu gì?',
+      'Học viên chạy đúng code của bạn nhưng ra kết quả khác. Ba nguyên nhân khả dĩ?'
+    ]]
+  ];
+
+  var list = document.getElementById('qlist');
+  var state = {};
+  var texts = {};
+  var idx = 0;
+
+  QUESTIONS.forEach(function(grp){
+    var h = document.createElement('div');
+    h.className = 'qgrp';
+    h.textContent = grp[0];
+    list.appendChild(h);
+
+    grp[1].forEach(function(q){
+      idx++;
+      var id = idx;
+      texts[id] = q;
+      var row = document.createElement('div');
+      row.className = 'qrow';
+      row.id = 'q' + id;
+
+      var n = document.createElement('div');
+      n.className = 'qn';
+      n.textContent = String(id).padStart(2,'0');
+
+      var t = document.createElement('div');
+      t.textContent = q;
+
+      var tog = document.createElement('div');
+      tog.className = 'qtoggle';
+      var yes = document.createElement('button');
+      yes.className = 'y'; yes.type='button'; yes.textContent = 'Vững';
+      yes.setAttribute('aria-label','Đánh dấu câu ' + id + ' là vững');
+      var no = document.createElement('button');
+      no.className = 'n'; no.type='button'; no.textContent = 'Chưa';
+      no.setAttribute('aria-label','Đánh dấu câu ' + id + ' là chưa vững');
+
+      yes.addEventListener('click', function(){ set(id,'ok'); });
+      no.addEventListener('click', function(){ set(id,'gap'); });
+
+      tog.appendChild(yes); tog.appendChild(no);
+      row.appendChild(n); row.appendChild(t); row.appendChild(tog);
+      list.appendChild(row);
+    });
+  });
+
+  var TOTAL = idx;
+
+  function set(id, val){
+    // Bánh cóc: câu đã đánh dấu chỉ có thể xoá bằng cách đánh dấu là vững.
+    state[id] = val;
+    var row = document.getElementById('q' + id);
+    row.classList.remove('ok','gap');
+    row.classList.add(val);
+    render();
+  }
+
+  function render(){
+    var ok = 0, gaps = [];
+    for(var i=1;i<=TOTAL;i++){
+      if(state[i] === 'ok') ok++;
+      else if(state[i] === 'gap') gaps.push(i);
+    }
+    document.getElementById('okCount').textContent = ok;
+    document.getElementById('railScore').textContent = ok + '/' + TOTAL;
+    document.getElementById('barFill').style.width = (ok / TOTAL * 100) + '%';
+
+    var msg = document.getElementById('statusMsg');
+    var touched = Object.keys(state).length;
+    if(touched === 0) msg.textContent = 'Chưa bắt đầu';
+    else if(ok >= 28) msg.textContent = 'Đủ ngưỡng dạy';
+    else if(ok >= 20) msg.textContent = 'Gần đủ — còn ' + (28 - ok) + ' câu';
+    else msg.textContent = 'Chưa đủ ngưỡng';
+
+    var gl = document.getElementById('gapList');
+    gl.innerHTML = '';
+    gaps.forEach(function(id){
+      var li = document.createElement('li');
+      li.textContent = texts[id];
+      gl.appendChild(li);
+    });
+  }
+  render();
+
+  /* ---------- Rail highlight ---------- */
+  var links = Array.prototype.slice.call(document.querySelectorAll('.rail a'));
+  var targets = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(l){ l.classList.remove('on'); });
+        var i = targets.indexOf(e.target);
+        if(i > -1) links[i].classList.add('on');
+      }
+    });
+  }, {rootMargin:'-10% 0px -70% 0px'});
+  targets.forEach(function(t){ if(t) obs.observe(t); });
+})();
+</script>
+</body>
+</html>

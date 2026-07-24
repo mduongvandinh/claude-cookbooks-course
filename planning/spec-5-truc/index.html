@@ -1,0 +1,2587 @@
+
+<!doctype html>
+<html lang="vi" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Giáo trình 5 trục — xây ứng dụng LLM sản xuất">
+      
+      
+      
+        <link rel="canonical" href="https://mduongvandinh.github.io/claude-cookbooks-course/planning/spec-5-truc/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Thiết kế: Giáo trình 5 trục — "Không đo được thì không dạy được" - Claude Cookbooks Course</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#thiet-ke-giao-trinh-5-truc-khong-o-uoc-thi-khong-day-uoc" class="md-skip">
+          Bỏ qua
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Đầu trang">
+    <a href="../.." title="Claude Cookbooks Course" class="md-header__button md-logo" aria-label="Claude Cookbooks Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Claude Cookbooks Course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Thiết kế: Giáo trình 5 trục — "Không đo được thì không dạy được"
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="Nền tối"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Nền tối" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="Nền sáng"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Nền sáng" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Tìm kiếm" placeholder="Tìm kiếm" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Tìm kiếm">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Xoá" aria-label="Xoá" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/mduongvandinh/claude-cookbooks-course" title="Xem mã nguồn" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Thanh điều hướng" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Claude Cookbooks Course" class="md-nav__button md-logo" aria-label="Claude Cookbooks Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Claude Cookbooks Course
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/mduongvandinh/claude-cookbooks-course" title="Xem mã nguồn" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trang chủ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../syllabus.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syllabus 5 trục
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../huong-dan-giang-vien/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hướng dẫn giảng viên
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../setup-moi-truong/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cài đặt môi trường
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Buổi 0 — Nền tảng
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Buổi 0 — Nền tảng
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../on-ramp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tổng quan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../on-ramp/buoi-0-nen-tang/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nền tảng API & tool use
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trục 00 — Đo lường
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Trục 00 — Đo lường
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-00-do-luong/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tổng quan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-00-do-luong/00-ca-hong/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ca hỏng: giám khảo hỏng
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-00-do-luong/0.1-phan-tich-loi/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    0.1 Phân tích lỗi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-00-do-luong/0.2-bo-de-vang/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    0.2 Bộ đề vàng
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-00-do-luong/0.3-giam-khao-can-chinh/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    0.3 Giám khảo & căn chỉnh
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-00-do-luong/bo-cau-hoi-vang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bộ câu hỏi vàng
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-00-do-luong/cong-00/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cổng 00
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trục 01 — Truy hồi
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Trục 01 — Truy hồi
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-01-truy-hoi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tổng quan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-01-truy-hoi/00-ca-hong/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ca hỏng: chunk cắt ngang
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-01-truy-hoi/1.1-duong-co-so/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.1 Đường cơ sở
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-01-truy-hoi/1.2-chunking-sieu-du-lieu/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.2 Chunking & siêu dữ liệu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-01-truy-hoi/1.3-lai-ghep-hyde/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.3 Lai ghép, HyDE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-01-truy-hoi/1.4-xep-hang-lai/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.4 Xếp hạng lại
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-01-truy-hoi/cong-01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cổng 01
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trục 02 — Sinh
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Trục 02 — Sinh
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-02-sinh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tổng quan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-02-sinh/00-ca-hong/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ca hỏng: ngữ cảnh cám dỗ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-02-sinh/2.1-tach-loi/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Tách hai loại lỗi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-02-sinh/2.2-ngu-canh-dai/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 Ngữ cảnh dài & mâu thuẫn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-02-sinh/2.3-tu-choi/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Từ chối trả lời
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-02-sinh/cong-02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cổng 02
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trục 03 — Vòng lặp
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Trục 03 — Vòng lặp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-03-vong-lap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tổng quan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-03-vong-lap/00-ca-hong/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ca hỏng: công cụ mô tả tồi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-03-vong-lap/3.1-khi-nao-khong-agent/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.1 Khi nào không cần agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-03-vong-lap/3.2-thiet-ke-cong-cu/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.2 Thiết kế công cụ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-03-vong-lap/3.3-trang-thai-tri-nho/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.3 Trạng thái & trí nhớ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-03-vong-lap/3.4-cham-agent/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.4 Chấm agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-03-vong-lap/cong-03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cổng 03
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trục 04 — Vận hành
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Trục 04 — Vận hành
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-04-van-hanh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tổng quan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-04-van-hanh/00-ca-hong/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ca hỏng: đánh đổi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-04-van-hanh/4.1-vet-chay/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.1 Vệt chạy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-04-van-hanh/4.2-do-tre-chi-phi/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.2 Độ trễ & chi phí
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-04-van-hanh/4.3-bao-mat/bai-giang/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.3 Bảo mật
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../truc-04-van-hanh/cong-04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cổng 04 (Tốt nghiệp)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vốn liếng tư vấn
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Vốn liếng tư vấn
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tu-van/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tổng quan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tu-van/so-tay-luan-diem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sổ tay luận điểm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tu-van/cau-hoi-chan-doan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bộ câu hỏi chẩn đoán
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tu-van/audit-checklist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklist audit hệ thống
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tu-van/mo-hinh-truong-thanh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mô hình trưởng thành & pitch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cheat sheets
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cheat sheets
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cheat-sheets/eval-harness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Eval harness
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cheat-sheets/model-ids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model ID
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../so-loi-test-case/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sổ lỗi & test case
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phu-luc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phụ lục
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0-vi-sao-viet-lai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0. Vì sao viết lại
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-muc-tieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Mục tiêu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-boi-canh-rang-buoc-a-chot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Bối cảnh &amp; ràng buộc (đã chốt)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-bon-quy-tac-su-pham-xuong-song-bat-buoc-moi-buoi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Bốn quy tắc sư phạm (xương sống, bắt buộc mọi buổi)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-kien-truc-5-truc-on-ramp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Kiến trúc 5 trục + on-ramp
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-corpus-dung-chung-action-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Corpus dùng chung + action layer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-cong-gates-inh-luong-phan-tang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Cổng (gates) — định lượng, phân tầng
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-bai-pha-truoc-break-first-predict-reveal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Bài phá trước (break-first) + predict-reveal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-cut-lists-danh-sach-cat-tuong-minh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Cut lists (danh sách cắt tường minh)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-bo-cau-hoi-vang-cham-hoc-vien-oi-may" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Bộ câu hỏi vàng + chấm học viên + đổi máy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-nguon-a-loc-3-kho-pin-license" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Nguồn đã lọc (3 kho) + pin + license
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-template-mot-buoi-deliverables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Template một buổi (deliverables)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-inh-dang-to-chuc-site" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Định dạng &amp; tổ chức site
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-lich-chay-gian-e-het-lech-xu-ly-lo-hong-lich" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Lịch chạy (giãn để hết lệch — xử lý lỗ hổng lịch)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-inh-nghia-at-cho-tai-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Định nghĩa "đạt" cho tài liệu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-pham-vi-ban-au-mvp-pilot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Phạm vi bản đầu (MVP pilot)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-ngoai-pham-vi-yagni" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Ngoài phạm vi (YAGNI)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="thiet-ke-giao-trinh-5-truc-khong-o-uoc-thi-khong-day-uoc">Thiết kế: Giáo trình 5 trục — "Không đo được thì không dạy được"<a class="headerlink" href="#thiet-ke-giao-trinh-5-truc-khong-o-uoc-thi-khong-day-uoc" title="Permanent link">&para;</a></h1>
+<p><strong>Ngày:</strong> 2026-07-24 (viết lại từ bản 10-module theo khung 5 trục của người dùng)
+<strong>Trạng thái:</strong> Đã chốt kiến trúc, chờ review spec
+<strong>Nguồn chân lý:</strong> Khung syllabus HTML "Giáo trình 5 trục" do người dùng thiết kế + bộ Claude Cookbooks (87 notebooks)</p>
+<h2 id="0-vi-sao-viet-lai">0. Vì sao viết lại<a class="headerlink" href="#0-vi-sao-viet-lai" title="Permanent link">&para;</a></h2>
+<p>Bản spec đầu (10 module theo năng lực: Tool Use → Multimodal → RAG → Agents → Evals → Production)
+đi theo <strong>trục tài liệu</strong> — gom bài theo cách cookbook tự phân loại. Khung 5 trục của người dùng đi theo
+<strong>trục vấn đề</strong>, và mạnh hơn ở ba điểm quyết định:</p>
+<ol>
+<li><strong>Đảo Eval lên đầu.</strong> Nếu Eval nằm cuối, mọi khẳng định "kỹ thuật A tốt hơn B" ở các phần trước
+   không kiểm chứng được suốt khoá — học viên học một danh mục thay vì một môn.</li>
+<li><strong>Cổng bằng số.</strong> Mỗi trục kết bằng một cổng có tiêu chí định lượng, không cãi nhau được.</li>
+<li><strong>Một corpus xuyên suốt.</strong> Điểm số giữa các trục chỉ có nghĩa khi đo trên cùng bộ dữ liệu.</li>
+</ol>
+<p>Spec này thay thế hoàn toàn kiến trúc 10 module. Bốn quy tắc sư phạm, capstone tinh thần, và định dạng
+MkDocs → Pages được giữ nhưng tổ chức lại quanh 5 trục.</p>
+<h2 id="1-muc-tieu">1. Mục tiêu<a class="headerlink" href="#1-muc-tieu" title="Permanent link">&para;</a></h2>
+<p>Dựng giáo trình để người dùng <strong>đứng lớp dạy một khoá bootcamp 9–10 tuần</strong> về xây ứng dụng LLM sản xuất,
+tổ chức theo 5 trục vấn đề, eval-first, có cổng định lượng. Học viên tốt nghiệp phải <strong>chẩn đoán được một
+hệ thống chưa từng thấy</strong>, không chỉ dùng được một danh mục kỹ thuật.</p>
+<h2 id="2-boi-canh-rang-buoc-a-chot">2. Bối cảnh &amp; ràng buộc (đã chốt)<a class="headerlink" href="#2-boi-canh-rang-buoc-a-chot" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Yếu tố</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Đối tượng</td>
+<td>Hỗn hợp trình độ → cần <strong>on-ramp Buổi 0</strong> cho người mới (xem §4)</td>
+</tr>
+<tr>
+<td>Định dạng dạy</td>
+<td><strong>Cohort/bootcamp</strong> (cổng, calibration, đổi máy cần lớp đồng bộ). <em>Cần người dùng xác nhận: khác lựa chọn "tự học có hướng dẫn" ban đầu.</em></td>
+</tr>
+<tr>
+<td>Đầu ra mỗi buổi</td>
+<td>Bài giảng chi tiết · Instructor notes · Bài tập + lời giải · Slide outline + cheat sheet</td>
+</tr>
+<tr>
+<td>Ngôn ngữ</td>
+<td>Tiếng Việt có dấu; thuật ngữ kỹ thuật giữ tiếng Anh</td>
+</tr>
+<tr>
+<td>Phạm vi</td>
+<td>5 trục + on-ramp; chọn lọc notebook theo trục (xem §10)</td>
+</tr>
+<tr>
+<td>Cấu trúc</td>
+<td>5 trục vấn đề, eval-first (thay 10 module theo năng lực)</td>
+</tr>
+<tr>
+<td>Định dạng đầu ra</td>
+<td><strong>HTML custom = trang syllabus/landing</strong>; <strong>17 buổi chi tiết = MkDocs Material → GitHub Pages</strong></td>
+</tr>
+<tr>
+<td>Repo</td>
+<td>Standalone <code>claude-cookbooks-course</code> dưới <code>github.com/mduongvandinh</code> (thư mục dev tách biệt)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ràng buộc kỹ thuật:</strong>
+- Notebook gốc không sửa/không copy; tham chiếu qua link Colab.
+- Model ID hands-on dùng alias hiện tại: <code>claude-opus-4-8</code>, <code>claude-sonnet-5</code>, <code>claude-haiku-4-5</code>.
+- File HTML/Markdown lưu <strong>UTF-8 chuẩn</strong> (bản HTML hiện tại đang double-encode/mojibake — phải sửa trước khi publish).
+- Con số trong "bài phá trước" là kết quả điển hình để đối chiếu, <strong>không phải hằng số</strong> — mỗi lớp tự đo lại trên corpus của mình.</p>
+<h2 id="3-bon-quy-tac-su-pham-xuong-song-bat-buoc-moi-buoi">3. Bốn quy tắc sư phạm (xương sống, bắt buộc mọi buổi)<a class="headerlink" href="#3-bon-quy-tac-su-pham-xuong-song-bat-buoc-moi-buoi" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Dự đoán trước, chạy sau.</strong> Học viên viết dự đoán và khoá lại trước khi xem kết quả. Widget
+   <code>predict-reveal</code> khoá ô kết quả tới khi có dự đoán (đã hiện thực trong HTML syllabus).</li>
+<li><strong>Bắt đầu bằng cái hỏng.</strong> Mỗi trục mở màn bằng một pipeline đã cấy lỗi (bài phá trước), không phải
+   sample chạy đúng.</li>
+<li><strong>Bánh cóc — chỉ quay một chiều.</strong> Câu hỏi instructor trả lời chưa trôi → vào bộ câu hỏi vàng, ở lại
+   tới khi có câu trả lời viết ra. Lỗi học viên từng gặp → test case vĩnh viễn.</li>
+<li><strong>Vấn đề trước, công cụ sau.</strong> Không buổi nào mang tên sản phẩm. Mỗi công cụ phải qua "thẻ biện minh":
+   thay bằng gì vẫn chạy? gỡ ra thì chỉ số nào tụt? Không qua → cắt.</li>
+</ol>
+<h2 id="4-kien-truc-5-truc-on-ramp">4. Kiến trúc 5 trục + on-ramp<a class="headerlink" href="#4-kien-truc-5-truc-on-ramp" title="Permanent link">&para;</a></h2>
+<p><strong>Buổi 0 · On-ramp (MỚI — xử lý lỗ hổng người mới).</strong> Trước tuần 1, cho lớp hỗn hợp một buổi nền tảng để
+người mới không rơi tự do ở trục 00: gọi Messages API, một prompt có cấu trúc, structured output, <strong>một vòng
+tool use</strong>. Nguồn: <code>misc/how_to_enable_json_mode</code>, <code>tool_use/calculator_tool</code>, <code>tool_use/extracting_structured_json</code>.
+Đây là prerequisite, không tính vào 5 trục và không có cổng.</p>
+<table>
+<thead>
+<tr>
+<th>Trục</th>
+<th>Câu hỏi trung tâm</th>
+<th>Buổi</th>
+<th>Cổng</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>00 · Đo lường</strong></td>
+<td>Làm sao biết hệ thống tốt lên hay xấu đi mà không phải cảm tính?</td>
+<td>3</td>
+<td>Cổng 00</td>
+</tr>
+<tr>
+<td><strong>01 · Truy hồi</strong></td>
+<td>Tại sao nó lấy sai tài liệu — và là lỗi truy hồi hay lỗi sinh?</td>
+<td>4</td>
+<td>Cổng 01</td>
+</tr>
+<tr>
+<td><strong>02 · Sinh</strong></td>
+<td>Context đã đúng, vì sao vẫn bịa — và dạy nó nói "không biết" thế nào?</td>
+<td>3</td>
+<td>Cổng 02</td>
+</tr>
+<tr>
+<td><strong>03 · Vòng lặp</strong></td>
+<td>Khi nào cần agent thay vì pipeline tất định — chứng minh, không cảm thấy?</td>
+<td>4</td>
+<td>Cổng 03</td>
+</tr>
+<tr>
+<td><strong>04 · Vận hành</strong></td>
+<td>Nó hỏng thế nào lúc 2 giờ sáng, và bạn biết sau bao lâu?</td>
+<td>3</td>
+<td>Cổng 04 · Tốt nghiệp</td>
+</tr>
+</tbody>
+</table>
+<p>Học viên chỉ qua trục sau khi vượt cổng của trục trước.</p>
+<h2 id="5-corpus-dung-chung-action-layer">5. Corpus dùng chung + action layer<a class="headerlink" href="#5-corpus-dung-chung-action-layer" title="Permanent link">&para;</a></h2>
+<p><strong>Một corpus duy nhất</strong> cho cả khoá: kho tài liệu kỹ thuật của một sản phẩm phần mềm (API docs, release notes,
+bảng mã lỗi, config reference, migration guide). Vì sao: có phiên bản (sinh ra lệch thời gian), có mã lỗi/tên hàm
+(chứng minh embedding thua keyword), có mâu thuẫn thật, có cấu trúc phân cấp, kiểm chứng được. Học viên tự thu
+thập corpus riêng ở buổi 0.1 và giữ nguyên tới hết khoá.</p>
+<p><strong>Action layer (MỚI — xử lý lỗ hổng trục 03).</strong> Corpus toàn text thì agent (trục 03) không có gì để <em>làm</em>.
+Bổ sung một <strong>lớp mock tool/API</strong> lên corpus (ví dụ: tra cứu bản ghi, cập nhật trạng thái, mở ticket) để trục 03
+có action surface thật, không chỉ RAG lặp lại. Chốt lớp này cùng lúc chốt corpus ở buổi 0.1.</p>
+<h2 id="6-cong-gates-inh-luong-phan-tang">6. Cổng (gates) — định lượng, phân tầng<a class="headerlink" href="#6-cong-gates-inh-luong-phan-tang" title="Permanent link">&para;</a></h2>
+<p>Mỗi cổng có tiêu chí bằng số. <strong>Phân tầng (MỚI — xử lý lỗ hổng cổng quá gắt):</strong> mỗi cổng có ngưỡng
+<strong>"tối thiểu để đi tiếp"</strong> và <strong>"đạt chuẩn"</strong>, kèm buổi remediation, để cổng không thành nút cổ chai cho lớp hỗn hợp.</p>
+<ul>
+<li><strong>Cổng 00:</strong> bộ đề vàng ≥ 30 câu, đủ 6 loại (mỗi loại ≥ 3), giám khảo đạt Cohen κ ≥ 0.6 trên 50 mẫu giữ riêng,
+  một lệnh CLI cho ra một con số, lặp 2 lần chênh &lt; 2%.</li>
+<li><strong>Cổng 01:</strong> recall@10 trên bộ đề vàng tăng ≥ 15 điểm so với baseline (có log trước/sau); bảng đóng góp mỗi kỹ
+  thuật (điểm thêm / ms tốn); nêu được kỹ thuật nào thử mà <em>làm tệ đi</em>.</li>
+<li><strong>Cổng 02:</strong> faithfulness ≥ 0.90 trên tập giữ riêng; từ chối đúng ≥ 80% nhóm ngoài phạm vi, từ chối nhầm ≤ 5%
+  nhóm trong phạm vi; nộp một ca vẫn sai + giải thích nguyên nhân gốc.</li>
+<li><strong>Cổng 03:</strong> chứng minh bằng số agent thắng (hoặc thua + giải thích) pipeline tất định trên ≥ 1 nhóm tác vụ;
+  độ chính xác chọn công cụ ≥ 0.90; báo cáo pass^3 (không chỉ pass@3).</li>
+<li><strong>Cổng 04 · Tốt nghiệp:</strong> mỗi truy vấn sinh vết chạy lần ngược được từ khiếu nại về lượt gọi trong &lt; 2 phút;
+  nêu được p50/p95/p99 + chi phí mỗi truy vấn; eval tự động chặn khi điểm tụt; nộp một tài liệu sự cố.</li>
+</ul>
+<h2 id="7-bai-pha-truoc-break-first-predict-reveal">7. Bài phá trước (break-first) + predict-reveal<a class="headerlink" href="#7-bai-pha-truoc-break-first-predict-reveal" title="Permanent link">&para;</a></h2>
+<p>Mỗi trục mở màn bằng một pipeline hỏng chạy được, kèm widget dự đoán. <strong>Cần sản xuất code hỏng thật cho cả 5 trục</strong>
+(HTML syllabus mới có phần dẫn + widget, chưa có code chạy). Widget đã có trong HTML; port sang MkDocs bằng cùng
+cơ chế (textarea + nút khoá + reveal, min ~25 ký tự).</p>
+<h2 id="8-cut-lists-danh-sach-cat-tuong-minh">8. Cut lists (danh sách cắt tường minh)<a class="headerlink" href="#8-cut-lists-danh-sach-cat-tuong-minh" title="Permanent link">&para;</a></h2>
+<p>Mỗi trục nêu rõ cắt gì và vì sao (đúng quy tắc ④). <strong>Bổ sung cắt tường minh còn thiếu:</strong>
+- <strong>Multimodal</strong> (vision/chart/PDF — cookbook mạnh) <strong>cắt</strong> vì corpus toàn text; nêu rõ thay vì bỏ im lặng.
+- Trục 00: cắt benchmark học thuật (SWE-bench…), RL/reward design, so sánh nền tảng eval thương mại.
+- Trục 01: cắt ~27 kỹ thuật RAG còn lại (trùng ý / không phải nút thắt / đòi hạ tầng / chỉ có nghĩa ở quy mô lớn).
+- Trục 03: cắt tutorial gắn nhà cung cấp, giao thức đa-agent, fine-tuning (chỉ giới thiệu).
+- Cách nói trên lớp: không nói "phần này không quan trọng"; nói "quan trọng khi bạn ở hoàn cảnh X, và đây là cách nhận ra".</p>
+<h2 id="9-bo-cau-hoi-vang-cham-hoc-vien-oi-may">9. Bộ câu hỏi vàng + chấm học viên + đổi máy<a class="headerlink" href="#9-bo-cau-hoi-vang-cham-hoc-vien-oi-may" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>30 câu hỏi vàng</strong> cho instructor (ratchet checklist đã hiện thực trong HTML). Ngưỡng: 28/30 trước buổi dạy đầu.</li>
+<li><strong>Chấm học viên bằng cổng</strong> (không bằng bài nộp cuối): Đạt (5/5 cổng) → Vững (5/5 + vấn đáp) → Dạy được (+ chữa
+  pipeline hỏng của người khác trong 30 phút). Không chấm số kỹ thuật đã dùng.</li>
+<li><strong>Bài thi cuối "đổi máy":</strong> hai học viên đổi repo, 30 phút tìm + mô tả 3 điểm yếu lớn nhất kèm số đo.</li>
+</ul>
+<h2 id="10-nguon-a-loc-3-kho-pin-license">10. Nguồn đã lọc (3 kho) + pin + license<a class="headerlink" href="#10-nguon-a-loc-3-kho-pin-license" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Bài thực hành — Kho RAG cookbook:</strong> giữ 8/~35 → trục 01, 02. Vật liệu tốt nhất (notebook chạy được).
+  Lấy 8 kỹ thuật ở bảng trục 01, viết lại dẫn nhập theo hướng chẩn đoán, thêm phiên bản hỏng.</li>
+<li><strong>Phụ tùng — Kho tutorial agent lên sản phẩm:</strong> giữ ~6/28 → trục 03, 04. <strong>PIN CHÍNH XÁC repo + KIỂM LICENSE
+  trước khi đưa vào nội dung thu phí</strong> (kho này dùng giấy phép phi thương mại tuỳ chỉnh — rủi ro nếu thương mại hoá).</li>
+<li><strong>Tài liệu đọc — Thư viện nguồn eval:</strong> giữ ~26/440+ → trục 00, 03, 04. Ba nhánh: (A) phân tích lỗi &amp; giám khảo
+  (~14 nguồn: Hamel Husain, Shreya Shankar, Eugene Yan; + Cohen κ, sai số chuẩn); (B) eval agent &amp; quan sát (~8);
+  (C) bảo mật &amp; công cụ (~4 + bộ công cụ).</li>
+<li><strong>Bổ sung (từ cookbook):</strong> on-ramp dùng <code>misc/how_to_enable_json_mode</code>, <code>tool_use/calculator_tool</code>,
+  <code>tool_use/extracting_structured_json</code>; hands-on cụ thể dùng alias model hiện tại.</li>
+</ul>
+<h2 id="11-template-mot-buoi-deliverables">11. Template một buổi (deliverables)<a class="headerlink" href="#11-template-mot-buoi-deliverables" title="Permanent link">&para;</a></h2>
+<p>Mỗi buổi (17 buổi + on-ramp) là một thư mục MkDocs, 5 file:
+- <code>bai-giang.md</code> — mục tiêu → khái niệm (tiếng Việt) → đi qua code kèm "vì sao" → box Core/Đi sâu → thẻ biện minh
+  công cụ → bài phá trước (predict-reveal) → lỗi thường gặp → tóm tắt + link. Đầu trang có link Colab.
+- <code>instructor-notes.md</code> — thời lượng, thông điệp chốt, câu hỏi gợi mở, điểm hay vấp, gợi ý demo, nạp câu hỏi vàng.
+- <code>bai-tap.md</code> + <code>loi-giai.md</code> — bài phân bậc + bước hướng tới cổng; mở đầu bằng "Dự đoán trước"; rubric.
+- <code>slide-outline.md</code> — 8–12 slide + cheat sheet 1 trang.</p>
+<h2 id="12-inh-dang-to-chuc-site">12. Định dạng &amp; tổ chức site<a class="headerlink" href="#12-inh-dang-to-chuc-site" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Trang syllabus (landing):</strong> HTML custom "Giáo trình 5 trục" hiện tại (sau khi sửa encoding + các điểm §2–§10).
+  Đây là bản đồ khoá + 4 quy tắc + bảng 5 trục + cổng + ratchet + đổi máy + lịch. Giữ nguyên phong cách thiết kế.</li>
+<li><strong>Nội dung 17 buổi:</strong> MkDocs Material → GitHub Pages (dễ bảo trì). Trang syllabus HTML nhúng/liên kết vào site,
+  hoặc đặt làm <code>index</code> tuỳ chọn tích hợp (chốt ở plan).</li>
+<li>Widget predict-reveal port sang MkDocs; cấu hình theme + extensions như bản plan trước.</li>
+</ul>
+<h2 id="13-lich-chay-gian-e-het-lech-xu-ly-lo-hong-lich">13. Lịch chạy (giãn để hết lệch — xử lý lỗ hổng lịch)<a class="headerlink" href="#13-lich-chay-gian-e-het-lech-xu-ly-lo-hong-lich" title="Permanent link">&para;</a></h2>
+<p>9 tuần × 2 buổi = 18 slot, nhưng 17 buổi nội dung + buổi chấm cổng + "đổi máy" → tuần cuối bị nhồi 3 buổi.
+<strong>Chốt: giãn thành 10 tuần</strong> (hoặc trộn "đổi máy" vào buổi 4.3). Tuần 2 và tuần 6 giữ buổi đệm vì hai cổng đầu
+là nơi lớp tắc nhiều nhất. Nếu phải cắt: cắt trục 03 xuống 3 buổi, <strong>không bao giờ cắt trục 00</strong>.</p>
+<h2 id="14-inh-nghia-at-cho-tai-lieu">14. Định nghĩa "đạt" cho tài liệu<a class="headerlink" href="#14-inh-nghia-at-cho-tai-lieu" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Mọi code hands-on chạy được, đối chiếu notebook gốc; model ID alias hiện tại.</li>
+<li>Mọi công cụ qua thẻ biện minh; mọi trục có cut list tường minh.</li>
+<li>Site MkDocs build <code>--strict</code> không lỗi; link nội bộ sống; widget predict-reveal khoá/mở đúng.</li>
+<li>HTML syllabus render tiếng Việt đúng (UTF-8, không mojibake); ratchet + predict-reveal chạy.</li>
+<li>Mỗi cổng có bài kiểm chứng bằng số + có ngưỡng phân tầng.</li>
+</ul>
+<h2 id="15-pham-vi-ban-au-mvp-pilot">15. Phạm vi bản đầu (MVP pilot)<a class="headerlink" href="#15-pham-vi-ban-au-mvp-pilot" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Sửa trang syllabus HTML:</strong> encoding UTF-8; thêm Buổi 0 on-ramp; thêm cut Multimodal tường minh; giãn lịch
+  10 tuần; thêm action layer vào phần corpus; cổng phân tầng.</li>
+<li><strong>Scaffold repo MkDocs</strong> (mkdocs.yml, predict-reveal, CSS, deploy Pages) + nhúng syllabus.</li>
+<li><strong>Pilot Trục 00 (Đo lường) đầy đủ:</strong> on-ramp Buổi 0 + 3 buổi (0.1 phân tích lỗi, 0.2 bộ đề vàng 6 loại,
+  0.3 giám khảo &amp; calibration) — mỗi buổi 5 file + bài phá trước "giám khảo hỏng" + Cổng 00 (phân tầng).</li>
+<li>Lý do chọn Trục 00 làm pilot: nó đi trước và gate mọi trục sau; validate được phần khó/mới nhất trước.</li>
+</ul>
+<h2 id="16-ngoai-pham-vi-yagni">16. Ngoài phạm vi (YAGNI)<a class="headerlink" href="#16-ngoai-pham-vi-yagni" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Không viết đủ cả 5 trục ngay — chỉ pilot on-ramp + Trục 00.</li>
+<li>Không sửa/di chuyển notebook gốc.</li>
+<li>Không dựng backend/đăng nhập/chấm tự động online (cổng chấm thủ công theo số).</li>
+<li>Không làm Multimodal, fine-tuning, đa-agent (đã cắt tường minh).</li>
+<li>Không thương mại hoá nội dung từ kho license phi thương mại cho tới khi kiểm license xong.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Trở lại mục lục
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "content.tabs.link", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0110\u00e3 sao ch\u00e9p", "clipboard.copy": "Sao ch\u00e9p v\u00e0o b\u1ed9 nh\u1edb t\u1ea1m", "search.result.more.one": "1 t\u1eeb kh\u00e1c trong trang", "search.result.more.other": "# t\u1eeb kh\u00e1c trong trang", "search.result.none": "Kh\u00f4ng t\u00ecm th\u1ea5y t\u00e0i li\u1ec7u li\u00ean quan", "search.result.one": "1 t\u00e0i li\u1ec7u li\u00ean quan", "search.result.other": "# t\u00e0i li\u1ec7u li\u00ean quan", "search.result.placeholder": "Nh\u1eadp \u0111\u1ec3 b\u1eaft \u0111\u1ea7u t\u00ecm ki\u1ebfm", "search.result.term.missing": "Kh\u00f4ng", "select.version": "Ch\u1ecdn phi\u00ean b\u1ea3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/javascripts/predict-reveal.js"></script>
+      
+    
+  </body>
+</html>
