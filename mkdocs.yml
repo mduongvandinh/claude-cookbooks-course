@@ -49,6 +49,36 @@ nav:
       - "0.3 Giám khảo & căn chỉnh": truc-00-do-luong/0.3-giam-khao-can-chinh/bai-giang.md
       - "Bộ câu hỏi vàng": truc-00-do-luong/bo-cau-hoi-vang.md
       - "Cổng 00": truc-00-do-luong/cong-00.md
+  - "Trục 01 — Truy hồi":
+      - Tổng quan: truc-01-truy-hoi/index.md
+      - "Ca hỏng: chunk cắt ngang": truc-01-truy-hoi/00-ca-hong.md
+      - "1.1 Đường cơ sở": truc-01-truy-hoi/1.1-duong-co-so/bai-giang.md
+      - "1.2 Chunking & siêu dữ liệu": truc-01-truy-hoi/1.2-chunking-sieu-du-lieu/bai-giang.md
+      - "1.3 Lai ghép, HyDE": truc-01-truy-hoi/1.3-lai-ghep-hyde/bai-giang.md
+      - "1.4 Xếp hạng lại": truc-01-truy-hoi/1.4-xep-hang-lai/bai-giang.md
+      - "Cổng 01": truc-01-truy-hoi/cong-01.md
+  - "Trục 02 — Sinh":
+      - Tổng quan: truc-02-sinh/index.md
+      - "Ca hỏng: ngữ cảnh cám dỗ": truc-02-sinh/00-ca-hong.md
+      - "2.1 Tách hai loại lỗi": truc-02-sinh/2.1-tach-loi/bai-giang.md
+      - "2.2 Ngữ cảnh dài & mâu thuẫn": truc-02-sinh/2.2-ngu-canh-dai/bai-giang.md
+      - "2.3 Từ chối trả lời": truc-02-sinh/2.3-tu-choi/bai-giang.md
+      - "Cổng 02": truc-02-sinh/cong-02.md
+  - "Trục 03 — Vòng lặp":
+      - Tổng quan: truc-03-vong-lap/index.md
+      - "Ca hỏng: công cụ mô tả tồi": truc-03-vong-lap/00-ca-hong.md
+      - "3.1 Khi nào không cần agent": truc-03-vong-lap/3.1-khi-nao-khong-agent/bai-giang.md
+      - "3.2 Thiết kế công cụ": truc-03-vong-lap/3.2-thiet-ke-cong-cu/bai-giang.md
+      - "3.3 Trạng thái & trí nhớ": truc-03-vong-lap/3.3-trang-thai-tri-nho/bai-giang.md
+      - "3.4 Chấm agent": truc-03-vong-lap/3.4-cham-agent/bai-giang.md
+      - "Cổng 03": truc-03-vong-lap/cong-03.md
+  - "Trục 04 — Vận hành":
+      - Tổng quan: truc-04-van-hanh/index.md
+      - "Ca hỏng: đánh đổi": truc-04-van-hanh/00-ca-hong.md
+      - "4.1 Vệt chạy": truc-04-van-hanh/4.1-vet-chay/bai-giang.md
+      - "4.2 Độ trễ & chi phí": truc-04-van-hanh/4.2-do-tre-chi-phi/bai-giang.md
+      - "4.3 Bảo mật": truc-04-van-hanh/4.3-bao-mat/bai-giang.md
+      - "Cổng 04 (Tốt nghiệp)": truc-04-van-hanh/cong-04.md
   - Cheat sheets:
       - Eval harness: cheat-sheets/eval-harness.md
       - Model ID: cheat-sheets/model-ids.md

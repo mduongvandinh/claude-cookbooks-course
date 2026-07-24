@@ -18,7 +18,7 @@ mà học viên phải vượt trước khi được đi tiếp.
 | **03 · Vòng lặp** | Khi nào cần agent thay vì pipeline tất định? |
 | **04 · Vận hành** | Nó hỏng thế nào lúc 2 giờ sáng? |
 
-> Bản pilot hiện có: **On-ramp Buổi 0** và **Trục 00 — Đo lường**. Các trục còn lại đang triển khai theo cùng template.
+> Đã có đầy đủ: **On-ramp Buổi 0** và **cả 5 trục (00–04)** — mỗi buổi gồm bài giảng, instructor notes, bài tập + lời giải, slide outline.
 
 **[→ Xem bản đồ 5 trục đầy đủ (syllabus)](syllabus.html)** — bốn quy tắc sư phạm, các cổng, lịch 10 tuần,
 bộ câu hỏi vàng, và bài thi "đổi máy".

@@ -36,7 +36,13 @@ mkdocs serve
 
 ## Trạng thái
 
-- [x] Trục 00 — Đo lường (pilot) + On-ramp Buổi 0
-- [ ] Trục 01–04 (triển khai theo cùng template)
+- [x] On-ramp Buổi 0
+- [x] Trục 00 — Đo lường
+- [x] Trục 01 — Truy hồi
+- [x] Trục 02 — Sinh
+- [x] Trục 03 — Vòng lặp
+- [x] Trục 04 — Vận hành
+
+Toàn bộ 5 trục + on-ramp đã có nội dung đầy đủ (mỗi buổi 5 file: bài giảng, instructor notes, bài tập, lời giải, slide).
 
 Tài liệu thiết kế: `docs/planning/`.
