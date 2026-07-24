@@ -75,3 +75,7 @@ Ba tầng riêng biệt; đa số chỉ cần hai tầng đầu; chứng minh nh
 không có.
 
 → Tiếp: [3.4 — Chấm agent](../3.4-cham-agent/bai-giang.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)

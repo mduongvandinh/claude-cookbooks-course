@@ -82,3 +82,7 @@ Khi truy hồi sai, hỏi theo thứ tự:
 Baseline tệ có chủ ý + đường cong recall@k + cây chẩn đoán ba nhánh. Chẩn đoán trước, tối ưu sau.
 
 → Tiếp: [1.2 — Chunking và siêu dữ liệu](../1.2-chunking-sieu-du-lieu/bai-giang.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)

@@ -59,3 +59,7 @@ Tìm điểm gãy bằng **thực nghiệm** — đo chất lượng theo số c
 gãy số chunk bằng thực nghiệm.
 
 → Tiếp: [2.3 — Từ chối trả lời](../2.3-tu-choi/bai-giang.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)

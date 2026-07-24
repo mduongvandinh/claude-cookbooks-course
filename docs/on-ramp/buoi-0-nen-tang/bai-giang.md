@@ -123,3 +123,7 @@ Một vòng tool use gồm 4 bước; model yêu cầu, bạn thực thi. Struct
 `input`. Hai ý này là nền cho toàn khoá.
 
 → Tiếp: [Trục 00 — Đo lường](../../truc-00-do-luong/index.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)

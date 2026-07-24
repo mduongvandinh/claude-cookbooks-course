@@ -76,3 +76,7 @@ hình khác. Hệ quả: đừng tin mù bảng xếp hạng — chúng đo *mô
 khung chạy đổi thứ hạng. Đây là cổng vào tư duy vận hành (Trục 04).
 
 → Tiếp: [Cổng 03](../cong-03.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)

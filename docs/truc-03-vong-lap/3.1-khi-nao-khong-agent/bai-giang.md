@@ -74,3 +74,7 @@ Ba dấu hiệu cần vòng lặp; mặc định pipeline tất định; dựng 
 năng đầu tiên.
 
 → Tiếp: [3.2 — Thiết kế công cụ là thiết kế agent](../3.2-thiet-ke-cong-cu/bai-giang.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)

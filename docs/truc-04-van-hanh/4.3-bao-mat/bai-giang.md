@@ -64,3 +64,7 @@ Kiểm bộ ba chết người; dựng thử tiêm lệnh gián tiếp; tối th
 eval tự động chặn regression.
 
 → Tiếp: [Cổng 04 (Tốt nghiệp)](../cong-04.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)

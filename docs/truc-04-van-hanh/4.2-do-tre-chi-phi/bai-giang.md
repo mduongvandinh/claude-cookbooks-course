@@ -85,3 +85,7 @@ r = client.messages.create(
 invalidation.
 
 → Tiếp: [4.3 — Bảo mật và chống thoái lui](../4.3-bao-mat/bai-giang.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)

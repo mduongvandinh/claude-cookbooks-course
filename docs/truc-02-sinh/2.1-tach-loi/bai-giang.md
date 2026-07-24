@@ -78,3 +78,7 @@ năng đảm bảo, không phụ thuộc prompt.
 Trung thành ≠ hữu ích; đo trần phần sinh bằng context hoàn hảo; trích dẫn cấp câu bằng Citations API (kiểm chứng được).
 
 → Tiếp: [2.2 — Ngữ cảnh dài, mâu thuẫn, và vị trí](../2.2-ngu-canh-dai/bai-giang.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)

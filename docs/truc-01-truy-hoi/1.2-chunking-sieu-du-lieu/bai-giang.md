@@ -67,3 +67,7 @@ lỗi "đúng nội dung nhưng sai phiên bản" — một trong sáu loại c�
 Chunk theo cấu trúc + gắn ngữ cảnh + lọc metadata cứng. Đây là hai đòn bẩy lớn nhất, tối ưu chúng trước rerank.
 
 → Tiếp: [1.3 — Lai ghép, viết lại truy vấn, HyDE](../1.3-lai-ghep-hyde/bai-giang.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)

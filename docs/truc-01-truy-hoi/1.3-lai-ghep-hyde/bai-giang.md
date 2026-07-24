@@ -71,3 +71,7 @@ làm tệ đi" mà Cổng 01 yêu cầu bạn nêu.
 Lai ghép đặc + thưa (trọng số đo được) + mở rộng truy vấn; HyDE chỉ cho câu mơ hồ. Đo từng cái vào bảng đóng góp.
 
 → Tiếp: [1.4 — Xếp hạng lại và bài toán ngân sách](../1.4-xep-hang-lai/bai-giang.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)

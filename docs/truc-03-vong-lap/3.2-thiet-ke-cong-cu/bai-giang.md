@@ -80,3 +80,7 @@ Thiết kế công cụ chính là thiết kế agent; mô tả rõ ràng > đ�
 công cụ một việc.
 
 → Tiếp: [3.3 — Trạng thái và trí nhớ](../3.3-trang-thai-tri-nho/bai-giang.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)

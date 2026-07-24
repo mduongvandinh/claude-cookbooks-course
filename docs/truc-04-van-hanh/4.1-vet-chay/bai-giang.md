@@ -80,3 +80,7 @@ Vệt chạy có cấu trúc, đủ để tái dựng quyết định và lần 
 thời gian; đừng ghi nội dung nặng.
 
 → Tiếp: [4.2 — Độ trễ và chi phí là chỉ số hạng nhất](../4.2-do-tre-chi-phi/bai-giang.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)

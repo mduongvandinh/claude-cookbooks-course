@@ -103,3 +103,7 @@ def cohen_kappa(a, b):
 Nhãn nhị phân + khử thiên lệch + đo κ so với người. Giám khảo chỉ được tin khi κ vượt ngưỡng cổng.
 
 → Tiếp: [Cổng 00](../cong-00.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)

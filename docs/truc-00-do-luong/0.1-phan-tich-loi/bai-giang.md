@@ -61,3 +61,7 @@ bộ đường cơ sở.
 Đọc tay 100 lượt → 6–8 nhóm lỗi có tần suất → xếp theo ảnh hưởng. Đây là nền cho mọi thứ đo được sau này.
 
 → Tiếp: [0.2 — Bộ đề vàng và sáu loại câu hỏi](../0.2-bo-de-vang/bai-giang.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)

@@ -83,3 +83,7 @@ SAU_LOAI = ["dữ kiện", "thời gian/phiên bản", "biên", "ngoài phạm v
 Sáu loại câu hỏi, mỗi loại soi một kiểu lỗi. Tự sinh được nhưng phải người duyệt. Giữ riêng 20% cho 0.3.
 
 → Tiếp: [0.3 — Bộ chấm và bài toán căn chỉnh](../0.3-giam-khao-can-chinh/bai-giang.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)

@@ -78,3 +78,7 @@ Lấy rộng để bao phủ, rerank để chính xác; đo chất lượng **v�
 ngõ sang tư duy vận hành (Trục 04).
 
 → Tiếp: [Cổng 01](../cong-01.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)

@@ -58,3 +58,7 @@ Dạy từ chối bằng grounding prompt + tín hiệu trích dẫn; đo từ c
 thước đo. Đây là buổi khó nhất — cân bằng, không cực đoan.
 
 → Tiếp: [Cổng 02](../cong-02.md)
+
+---
+
+**Tài liệu buổi này:** [Instructor notes](instructor-notes.md) · [Bài tập](bai-tap.md) · [Lời giải](loi-giai.md) · [Slide outline](slide-outline.md)
