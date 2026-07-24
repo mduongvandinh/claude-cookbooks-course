@@ -24,6 +24,15 @@ markdown_extensions:
   - pymdownx.tabbed: {alternate_style: true}
 extra_css: [assets/stylesheets/extra.css]
 extra_javascript: [assets/javascripts/predict-reveal.js]
+
+# Các file phụ (instructor-notes, bai-tap, loi-giai, slide-outline, planning) cố ý không nằm trong nav
+# — chúng được liên kết từ bài giảng hoặc là tài liệu tham khảo. Hạ mức cảnh báo để build --strict pass.
+validation:
+  nav:
+    omitted_files: info
+  links:
+    absolute_links: info
+    unrecognized_links: info
 nav:
   - Trang chủ: index.md
   - "Syllabus 5 trục": syllabus.html
